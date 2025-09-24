@@ -1,103 +1,353 @@
-import Image from "next/image";
+import RegistrationForm from '@/components/RegistrationForm';
+import Section from '@/components/Section';
+import Image from 'next/image';
+import { 
+  CalendarDaysIcon, 
+  ClockIcon, 
+  ComputerDesktopIcon,
+  QuestionMarkCircleIcon,
+  HeartIcon,
+  LightBulbIcon,
+  DocumentTextIcon,
+  UserGroupIcon,
+  CheckCircleIcon,
+  LinkIcon,
+  BookOpenIcon
+} from '@heroicons/react/24/outline';
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <main className="min-h-screen">
+      {/* DOBRA 1: A Promessa e a Ação Imediata */}
+      <section id="form" className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-dark via-primary-purple to-primary-dark">
+        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="relative z-10 container mx-auto px-6 py-20">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Conteúdo do Hero */}
+            <div className="text-white space-y-8">
+              <div className="space-y-6">
+                <h1 className="text-4xl lg:text-4xl font-bold leading-tight">
+                  A jornada de criar um filho com altas habilidades pode e deve ser mais leve. Chegou a hora de cuidar de quem cuida.
+                </h1>
+                <p className="text-lg lg:text-xl text-white/90 leading-relaxed">
+                  Participe do nosso encontro online e gratuito, pensado para cuidar de quem cuida. Descubra caminhos para fortalecer seu filho e, principalmente, para se fortalecer como mães e pais de filhos com altas habilidades e superdotação.
+                </p>
+              </div>
+              
+              {/* Destaque do Evento */}
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 space-y-4">
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center">
+                    <CalendarDaysIcon className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="text-base lg:text-lg">Quando? Dia 09 de Outubro, quinta-feira.</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center">
+                    <ClockIcon className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="text-base lg:text-lg">Que horas? Às 19h45 (horário de Brasília).</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center">
+                    <ComputerDesktopIcon className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="text-base lg:text-lg">Onde? Online e Ao Vivo.</span>
+                </div>
+              </div>
+            </div>
+            
+            {/* Formulário de Inscrição */}
+            <div className="flex justify-center lg:justify-end">
+              <RegistrationForm />
+            </div>
+          </div>
         </div>
+      </section>
+
+      {/* DOBRA 2: Conexão com a Dor (Empatia) */}
+      <Section backgroundColor="gray">
+        <div className="text-center space-y-8">
+          <h2 className="text-3xl lg:text-4xl font-bold text-primary-dark">
+            Mamãe e Papai, se vocês...
+          </h2>
+          
+          <div className="max-w-4xl mx-auto space-y-6">
+            <div className="flex items-start space-x-4 p-6 bg-white rounded-xl shadow-md">
+              <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                <QuestionMarkCircleIcon className="w-5 h-5 text-white" />
+              </div>
+              <p className="text-base lg:text-lg text-gray-700">
+                ... sentem-se perdidos, tentando entender se os comportamentos intensos e a curiosidade insaciável do seu filho são, de fato, sinais de altas habilidades.
+              </p>
+            </div>
+
+            <div className="flex items-start space-x-4 p-6 bg-white rounded-xl shadow-md">
+              <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                <HeartIcon className="w-5 h-5 text-white" />
+              </div>
+              <p className="text-base lg:text-lg text-gray-700">
+                ... percebem a falta de apoio da escola e até da família, ouvindo que é &quot;apenas uma fase&quot; ou &quot;coisa de criança inteligente&quot;.
+              </p>
+            </div>
+
+            <div className="flex items-start space-x-4 p-6 bg-white rounded-xl shadow-md">
+              <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                <LightBulbIcon className="w-5 h-5 text-white" />
+              </div>
+              <p className="text-base lg:text-lg text-gray-700">
+                ... buscam conhecimento confiável, mas se deparam com um oceano de informações confusas e mitos que mais atrapalham do que ajudam.
+              </p>
+            </div>
+
+            <div className="flex items-start space-x-4 p-6 bg-white rounded-xl shadow-md">
+              <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                <DocumentTextIcon className="w-5 h-5 text-white" />
+              </div>
+              <p className="text-base lg:text-lg text-gray-700">
+                ... se perguntam, no silêncio do fim do dia, se estão fazendo o suficiente e como podem verdadeiramente ajudar seu filho a florescer sem se sentirem esgotados.
+              </p>
+            </div>
+
+            <div className="flex items-start space-x-4 p-6 bg-white rounded-xl shadow-md">
+              <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                <UserGroupIcon className="w-5 h-5 text-white" />
+              </div>
+              <p className="text-base lg:text-lg text-gray-700">
+                ... anseiam por conversar com outros pais que entendem exatamente o que vocês estão sentindo, sem julgamentos ou conselhos vazios.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-12 p-8 bg-primary-purple rounded-2xl text-white">
+            <p className="text-xl font-semibold">
+              ... então este encontro foi desenhado para vocês.
+            </p>
+          </div>
+        </div>
+      </Section>
+
+      {/* DOBRA 3: Apresentação da Solução (O Conteúdo) */}
+      <Section backgroundColor="purple">
+        <div className="text-center space-y-8">
+          <h2 className="text-3xl lg:text-4xl font-bold text-white">
+            Do que conversaremos no nosso encontro?
+          </h2>
+          
+          <div className="max-w-5xl mx-auto space-y-8">
+            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-xl text-left">
+              <div className="flex items-start space-x-4">
+                <div className="w-12 h-12 bg-accent-orange rounded-full flex items-center justify-center flex-shrink-0">
+                  <CheckCircleIcon className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white mb-3">Clareza para o Caminho</h3>
+                  <p className="text-white/90">
+                    Como identificar os sinais das altas habilidades com segurança e acolher essa descoberta em família, transformando dúvida em confiança.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-xl text-left">
+              <div className="flex items-start space-x-4">
+                <div className="w-12 h-12 bg-accent-orange rounded-full flex items-center justify-center flex-shrink-0">
+                  <LinkIcon className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white mb-3">Construindo Pontes</h3>
+                  <p className="text-white/90">
+                    Estratégias para criar uma rede de apoio eficaz, dialogando com a escola e envolvendo a família na jornada de desenvolvimento do seu filho.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-xl text-left">
+              <div className="flex items-start space-x-4">
+                <div className="w-12 h-12 bg-accent-orange rounded-full flex items-center justify-center flex-shrink-0">
+                  <BookOpenIcon className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white mb-3">Conhecimento que Liberta</h3>
+                  <p className="text-white/90">
+                    Vamos desmistificar os maiores mitos sobre a superdotação e focar no que a ciência e a prática nos ensinam sobre o bem-estar emocional e intelectual dessas crianças.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-xl text-left">
+              <div className="flex items-start space-x-4">
+                <div className="w-12 h-12 bg-accent-orange rounded-full flex items-center justify-center flex-shrink-0">
+                  <HeartIcon className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white mb-3">Ferramentas para o Coração</h3>
+                  <p className="text-white/90">
+                    Como lidar com a intensidade emocional, a sensibilidade e os desafios do dia a dia de forma afetuosa e prática, cuidando da saúde mental de todos.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-xl text-left">
+              <div className="flex items-start space-x-4">
+                <div className="w-12 h-12 bg-accent-orange rounded-full flex items-center justify-center flex-shrink-0">
+                  <UserGroupIcon className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white mb-3">O Poder do &quot;Nós&quot;</h3>
+                  <p className="text-white/90">
+                    A importância vital de se conectar. Falaremos sobre como encontrar e nutrir uma comunidade de apoio que entende, acolhe e fortalece.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* DOBRA 4: Quem Guia a Jornada (Autoridade e Conexão) */}
+      <Section backgroundColor="gray">
+        <div className="text-center space-y-12">
+          <h2 className="text-3xl lg:text-4xl font-bold text-primary-dark">
+            Quem te guia nessa jornada
+          </h2>
+          
+          <div className="max-w-6xl mx-auto">
+            <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
+              <div className="grid lg:grid-cols-2 gap-0">
+                {/* Lado esquerdo - Foto da Angela */}
+                <div className="relative bg-gradient-to-br from-primary-purple to-primary-dark p-8 lg:p-12 flex items-center justify-center">
+                  <div className="relative">
+                    <div className="absolute -inset-4 bg-gradient-to-r from-accent-orange to-accent-yellow rounded-2xl blur-sm opacity-30"></div>
+                    <Image
+                      src="/angela_site.webp"
+                      alt="Angela Virgolim"
+                      width={400}
+                      height={400}
+                      className="relative rounded-2xl shadow-2xl object-cover border-4 border-white"
+                    />
+                  </div>
+                  {/* Decoração de fundo */}
+                  <div className="absolute top-4 right-4 w-20 h-20 bg-accent-orange/20 rounded-full"></div>
+                  <div className="absolute bottom-4 left-4 w-16 h-16 bg-accent-yellow/20 rounded-full"></div>
+                </div>
+                
+                {/* Lado direito - Texto */}
+                <div className="p-8 lg:p-12 flex flex-col justify-center">
+                  <div className="space-y-6">
+                    {/* Citação destacada */}
+                    <div className="bg-gradient-to-r from-accent-orange to-accent-yellow p-6 rounded-2xl text-white">
+                      <p className="text-lg lg:text-xl font-semibold italic leading-relaxed">
+                        &quot;Para que uma criança com potencial brilhante possa florescer, quem cuida dela precisa estar forte, informado e, acima de tudo, amparado.&quot;
+                      </p>
+                      <p className="text-right mt-4 font-medium">— Angela Virgolim</p>
+                    </div>
+                    
+                    {/* Biografia */}
+                    <div className="space-y-4 text-gray-700">
+                      <p className="text-base lg:text-lg leading-relaxed">
+                        A jornada de Angela Virgolim começa no mesmo lugar que a sua: no amor que observa, no cuidado que busca respostas. Antes de ser autora e uma referência nacional e mundial no tema de altas habilidades e superdotação, ela é mineira de Araxá, esposa, mãe e avó de altas habilidades.
+                      </p>
+                      
+                      <p className="text-base lg:text-lg leading-relaxed">
+                        Essa fascinação pela &quot;faísca&quot; única em cada criança a levou a uma busca que uniu o acadêmico e o afetuoso. Por 30 anos, foi professora e mentora na Universidade de Brasília (UnB) e atravessou o mundo para obter seu PhD em Psicologia pela Universidade de Connecticut, onde se especializou diretamente com o maior nome da área, o Dr. Joseph Renzulli.
+                      </p>
+                      
+                      <p className="text-base lg:text-lg leading-relaxed">
+                        Foi nesse percurso, especialmente nos programas que fundou dentro da UnB para acolher centenas de famílias, que Ângela percebeu algo fundamental: o conhecimento técnico, por si só, não bastava. A maior angústia das mães e dos pais era a solidão e a incerteza.
+                      </p>
+                    </div>
+                    
+                    {/* Credenciais */}
+                    <div className="grid grid-cols-2 gap-3 pt-6">
+                      <div className="bg-primary-purple text-white p-4 rounded-xl text-center">
+                        <div className="text-2xl font-bold">30+</div>
+                        <div className="text-sm">anos na UnB</div>
+                      </div>
+                      <div className="bg-accent-orange text-white p-4 rounded-xl text-center">
+                        <div className="text-2xl font-bold">PhD</div>
+                        <div className="text-sm">Psicologia</div>
+                      </div>
+                      <div className="bg-accent-yellow text-white p-4 rounded-xl text-center">
+                        <div className="text-2xl font-bold">1º</div>
+                        <div className="text-sm">Prêmio Jabuti</div>
+                      </div>
+                      <div className="bg-primary-dark text-white p-4 rounded-xl text-center">
+                        <div className="text-2xl font-bold">1000+</div>
+                        <div className="text-sm">famílias</div>
+                      </div>
+                    </div>
+                    
+                    {/* Missão final */}
+                    <div className="bg-gray-50 p-6 rounded-2xl border-l-4 border-accent-orange">
+                      <p className="text-base lg:text-lg text-gray-700 leading-relaxed font-medium">
+                        Mesmo após presidir o Conselho Brasileiro para Superdotação (ConBraSD), ela fundou o Instituto Virgolim: um espaço de acolhimento pensado para transformar décadas de ciência em um apoio real para a sua jornada, garantindo que você não precise mais caminhar só.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* DOBRA 5: Chamada Final para Ação (Urgência e Reforço) */}
+      <Section backgroundColor="purple">
+        <div className="text-center space-y-8">
+          <h2 className="text-3xl lg:text-4xl font-bold text-white">
+            Sua jornada não precisa mais ser solitária.
+          </h2>
+          
+          <div className="max-w-3xl mx-auto">
+            <p className="text-lg lg:text-xl text-white/90 leading-relaxed mb-12">
+              Este encontro é o nosso primeiro passo, juntos. Um convite para você respirar fundo, encontrar respostas e se conectar com quem entende a sua realidade. A transformação que você busca para seu filho começa com o seu fortalecimento.
+            </p>
+            
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8">
+              <div className="space-y-6">
+                <div className="text-center">
+                  <div className="text-5xl font-bold text-accent-orange mb-4">GRATUITO</div>
+                  <p className="text-lg text-white/90">Este encontro é totalmente gratuito</p>
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="flex items-center justify-center space-x-3">
+                    <div className="w-6 h-6 bg-accent-orange rounded-full flex items-center justify-center">
+                      <CheckCircleIcon className="w-4 h-4 text-white" />
+                    </div>
+                    <span className="text-white/90">Acesso imediato ao grupo do WhatsApp</span>
+                  </div>
+                  <div className="flex items-center justify-center space-x-3">
+                    <div className="w-6 h-6 bg-accent-orange rounded-full flex items-center justify-center">
+                      <CheckCircleIcon className="w-4 h-4 text-white" />
+                    </div>
+                    <span className="text-white/90">Material exclusivo preparatório</span>
+                  </div>
+                  <div className="flex items-center justify-center space-x-3">
+                    <div className="w-6 h-6 bg-accent-orange rounded-full flex items-center justify-center">
+                      <CheckCircleIcon className="w-4 h-4 text-white" />
+                    </div>
+                    <span className="text-white/90">Comunidade de pais que te entendem</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="mt-12">
+              <a 
+                href="#form" 
+                className="inline-block bg-gradient-to-r from-accent-orange to-accent-yellow text-white font-bold py-6 px-12 rounded-xl text-2xl hover:from-orange-600 hover:to-yellow-500 transform hover:scale-105 transition-all duration-200 shadow-2xl"
+              >
+                QUERO GARANTIR MINHA VAGA GRATUITA
+              </a>
+            </div>
+          </div>
+        </div>
+      </Section>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
   );
 }
