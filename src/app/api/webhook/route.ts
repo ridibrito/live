@@ -59,18 +59,31 @@ export async function POST(request: NextRequest) {
         });
       } else {
         const errorText = await n8nResponse.text();
-        console.warn('N8N retornou erro:', {
+        console.error('❌ N8N retornou erro:', {
           status: n8nResponse.status,
           statusText: n8nResponse.statusText,
-          body: errorText
+          body: errorText,
+          url: webhookUrl
         });
+        
+        // Log específico para workflow não ativo
+        if (n8nResponse.status === 404 && errorText.includes('not registered')) {
+          console.error('🚨 ATENÇÃO: Workflow do N8N não está ativo!');
+          console.error('📋 Ação necessária: Ativar o workflow no N8N');
+        }
       }
     } catch (n8nError) {
-      console.warn('Erro ao conectar com N8N:', {
+      console.error('❌ Erro ao conectar com N8N:', {
         name: n8nError instanceof Error ? n8nError.name : 'Unknown',
         message: n8nError instanceof Error ? n8nError.message : String(n8nError),
-        stack: n8nError instanceof Error ? n8nError.stack : undefined
+        stack: n8nError instanceof Error ? n8nError.stack : undefined,
+        url: webhookUrl
       });
+      
+      // Log específico para timeout
+      if (n8nError instanceof Error && n8nError.name === 'AbortError') {
+        console.error('⏰ Timeout: N8N não respondeu em 10 segundos');
+      }
     }
 
     // Fallback: salvar dados localmente (logs detalhados)
