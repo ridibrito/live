@@ -9,9 +9,23 @@ export async function POST(request: NextRequest) {
   
   try {
     // Captura todos os dados enviados no corpo da requisição
-    const formData = await request.json();
+    let formData;
+    try {
+      const rawBody = await request.text();
+      console.log('📥 Raw body recebido:', rawBody);
+      formData = JSON.parse(rawBody);
+    } catch (jsonError) {
+      console.error('❌ Erro ao fazer parse do JSON:', {
+        error: jsonError instanceof Error ? jsonError.message : String(jsonError),
+        body: await request.text()
+      });
+      return NextResponse.json(
+        { message: 'Erro no formato dos dados enviados.' },
+        { status: 400 }
+      );
+    }
     
-    console.log('Dados recebidos:', JSON.stringify(formData, null, 2));
+    console.log('✅ Dados recebidos:', JSON.stringify(formData, null, 2));
 
     // Validação básica dos dados
     if (!formData.name || !formData.email || !formData.phone || !formData.occupation) {
