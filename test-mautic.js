@@ -10,8 +10,8 @@ const testData = {
 
 // Configuração do Mautic
 const mauticUrl = 'email.coruss.com.br';
-const publicKey = '1_1yfuhaq4q3y8sckok8ossgo440c404okcws08kgggw80kowwsg';
-const secretKey = '2892h1bx7askcog880844os4ossk80k0o4cwkccck4o8ss8o4o';
+const mauticUsername = 'contato@coruss.com.br';
+const mauticPassword = '@Aldeia2026';
 
 // Dados para o Mautic
 const mauticData = {
@@ -20,7 +20,7 @@ const mauticData = {
   email: testData.email,
   phone: testData.phone,
   occupation: testData.occupation,
-  tags: ['live-aldeia', 'formulario-inscricao', 'teste'],
+  tags: ['live-aldeia', 'formulario-inscricao', 'inscrito-para-live', 'teste'],
   source: 'live-aldeia-singular',
   sourceId: 'teste-script'
 };
@@ -35,7 +35,7 @@ const options = {
   headers: {
     'Content-Type': 'application/json',
     'Content-Length': Buffer.byteLength(postData),
-    'Authorization': `Basic ${Buffer.from(`${publicKey}:${secretKey}`).toString('base64')}`,
+    'Authorization': `Basic ${Buffer.from(`${mauticUsername}:${mauticPassword}`).toString('base64')}`,
     'User-Agent': 'Test-Script/1.0'
   }
 };

@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
     phone: data.phone,
     occupation: data.occupation,
     // Campos customizados do Mautic
-    tags: ['live-aldeia', 'formulario-inscricao'],
+    tags: ['live-aldeia', 'formulario-inscricao', 'inscrito-para-live'],
     ipAddress: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown',
     userAgent: request.headers.get('user-agent') || 'unknown',
     source: 'live-aldeia-singular',
