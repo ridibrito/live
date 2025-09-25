@@ -3,7 +3,7 @@
 import RegistrationForm from '@/components/RegistrationForm';
 import Section from '@/components/Section';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { 
   CalendarDaysIcon, 
   ClockIcon, 
@@ -19,19 +19,56 @@ import {
 } from '@heroicons/react/24/outline';
 
 export default function Home() {
-  const [currentLogoIndex, setCurrentLogoIndex] = useState(0);
-  const [currentColorIndex, setCurrentColorIndex] = useState(0);
-  
-  const logos = [
-    { src: '/horizontal.png', alt: 'Logo Horizontal' },
-    { src: '/allWhite.png', alt: 'Logo All White' },
-    { src: '/white.png', alt: 'Logo White' }
-  ];
+  useEffect(() => {
+    // Aguardar a hidratação completa
+    const timer = setTimeout(() => {
+      // Função para rolagem suave e lenta
+      const smoothScrollToForm = (e: Event) => {
+        e.preventDefault();
+        const target = document.getElementById('form');
+        if (target) {
+          const targetPosition = target.offsetTop - 100; // 100px de margem
+          const startPosition = window.pageYOffset;
+          const distance = targetPosition - startPosition;
+          const duration = 2000; // 2 segundos para rolagem mais lenta
+          let start: number | null = null;
 
-  const colors = [
-    { name: 'Laranja', textColor: 'text-accent-orange', decorationColor: 'decoration-accent-orange' },
-    { name: 'Amarelo', textColor: 'text-[#F5AF21]', decorationColor: 'decoration-[#F5AF21]' }
-  ];
+          const animation = (currentTime: number) => {
+            if (start === null) start = currentTime;
+            const timeElapsed = currentTime - start;
+            const run = easeInOutQuad(timeElapsed, startPosition, distance, duration);
+            window.scrollTo(0, run);
+            if (timeElapsed < duration) requestAnimationFrame(animation);
+          };
+
+          // Função de easing para movimento suave
+          const easeInOutQuad = (t: number, b: number, c: number, d: number) => {
+            t /= d / 2;
+            if (t < 1) return c / 2 * t * t + b;
+            t--;
+            return -c / 2 * (t * (t - 2) - 1) + b;
+          };
+
+          requestAnimationFrame(animation);
+        }
+      };
+
+      // Adicionar event listeners para todos os links que levam ao formulário
+      const formLinks = document.querySelectorAll('a[href="#form"]');
+      formLinks.forEach(link => {
+        link.addEventListener('click', smoothScrollToForm);
+      });
+
+      // Cleanup
+      return () => {
+        formLinks.forEach(link => {
+          link.removeEventListener('click', smoothScrollToForm);
+        });
+      };
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <main className="min-h-screen">
@@ -39,34 +76,17 @@ export default function Home() {
       <section id="form" className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-dark via-primary-purple to-primary-dark">
         <div className="absolute inset-0 bg-black/50"></div>
         <div className="relative z-10 container mx-auto px-6 py-20">
-          {/* Logo Principal - Carrossel */}
+          {/* Logo Principal */}
           <div className="flex justify-center mb-12">
-            <div className="relative">
-              <Image
-                src={logos[currentLogoIndex].src}
-                alt={logos[currentLogoIndex].alt}
-                width={300}
-                height={100}
-                className="object-contain"
-                priority
-              />
-              
-              {/* Indicadores do carrossel */}
-              <div className="flex justify-center space-x-2 mt-4">
-                {logos.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentLogoIndex(index)}
-                    className={`w-3 h-3 rounded-full transition-all duration-200 ${
-                      index === currentLogoIndex 
-                        ? 'bg-accent-orange' 
-                        : 'bg-white/50 hover:bg-white/70'
-                    }`}
-                    aria-label={`Mostrar logo ${index + 1}`}
-                  />
-                ))}
-              </div>
-            </div>
+            <Image
+              src="/horizontal.png"
+              alt="Logo Aldeia Singular"
+              width={300}
+              height={100}
+              className="object-contain"
+              style={{ height: "auto" }}
+              priority
+            />
           </div>
           
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -74,25 +94,8 @@ export default function Home() {
             <div className="text-white space-y-8">
               <div className="space-y-6">
                 <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight">
-                  A jornada de criar um filho com altas habilidades pode e deve ser mais leve. <span className={`${colors[currentColorIndex].textColor} underline ${colors[currentColorIndex].decorationColor} decoration-2 underline-offset-4`}>Chegou a hora de cuidar de quem cuida.</span>
+                  A jornada de criar um filho com altas habilidades pode e deve ser mais leve. <span className="text-[#F5AF21] underline decoration-[#F5AF21] decoration-2 underline-offset-4">Chegou a hora de cuidar de quem cuida.</span>
                 </h1>
-                
-                {/* Indicadores de cor para o texto destacado */}
-                <div className="flex justify-center space-x-3 mt-4">
-                  {colors.map((color, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentColorIndex(index)}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                        index === currentColorIndex 
-                          ? 'bg-white/20 text-white border-2 border-white' 
-                          : 'bg-white/10 text-white/70 hover:bg-white/15'
-                      }`}
-                    >
-                      {color.name}
-                    </button>
-                  ))}
-                </div>
                 <p className="text-lg lg:text-xl text-white/90 leading-relaxed">
                   Participe do nosso encontro online e gratuito, pensado para cuidar de quem cuida. Descubra caminhos para fortalecer seu filho e, principalmente, para se fortalecer como mães e pais de filhos com altas habilidades e superdotação.
                 </p>
@@ -104,19 +107,19 @@ export default function Home() {
                   <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center">
                     <CalendarDaysIcon className="w-5 h-5 text-white" />
                   </div>
-                  <span className="text-base lg:text-lg">Quando? Dia 09 de Outubro, quinta-feira.</span>
+                  <span className="text-base lg:text-lg"><span className="font-black">Quando?</span> Dia 09 de Outubro, quinta-feira.</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center">
                     <ClockIcon className="w-5 h-5 text-white" />
                   </div>
-                  <span className="text-base lg:text-lg">Que horas? Às 19h45 (horário de Brasília).</span>
+                  <span className="text-base lg:text-lg"><span className="font-black">Que horas?</span> Às 19h45 (horário de Brasília).</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center">
                     <ComputerDesktopIcon className="w-5 h-5 text-white" />
                   </div>
-                  <span className="text-base lg:text-lg">Onde? Online e Ao Vivo.</span>
+                  <span className="text-base lg:text-lg"><span className="font-black">Onde?</span> Online e Ao Vivo.</span>
                 </div>
               </div>
             </div>
@@ -189,9 +192,9 @@ export default function Home() {
             </p>
             <a 
               href="#form" 
-              className="inline-block bg-gradient-to-r from-accent-orange to-accent-yellow text-white font-bold py-4 px-8 rounded-xl text-lg hover:from-orange-600 hover:to-yellow-500 transform hover:scale-105 transition-all duration-200 shadow-lg"
+              className="inline-block bg-gradient-to-r from-accent-orange to-accent-yellow text-white font-bold py-4 px-8 rounded-xl text-lg hover:from-orange-600 hover:to-yellow-500 transform hover:scale-105 transition-all duration-200 shadow-lg border-2 border-white"
             >
-              QUERO PARTICIPAR GRATUITAMENTE
+              QUERO PARTICIPAR DA LIVE
             </a>
           </div>
         </div>
@@ -279,9 +282,9 @@ export default function Home() {
           <div className="mt-12 text-center">
             <a 
               href="#form" 
-              className="inline-block bg-gradient-to-r from-accent-orange to-accent-yellow text-white font-bold py-4 px-8 rounded-xl text-lg hover:from-orange-600 hover:to-yellow-500 transform hover:scale-105 transition-all duration-200 shadow-lg"
+              className="inline-block bg-gradient-to-r from-accent-orange to-accent-yellow text-white font-bold py-4 px-8 rounded-xl text-lg hover:from-orange-600 hover:to-yellow-500 transform hover:scale-105 transition-all duration-200 shadow-lg border-2 border-white"
             >
-              QUERO SABER MAIS SOBRE O ENCONTRO
+              QUERO PARTICIPAR DA LIVE
             </a>
           </div>
         </div>
@@ -375,9 +378,9 @@ export default function Home() {
           <div className="mt-12 text-center">
             <a 
               href="#form" 
-              className="inline-block bg-gradient-to-r from-accent-orange to-accent-yellow text-white font-bold py-4 px-8 rounded-xl text-lg hover:from-orange-600 hover:to-yellow-500 transform hover:scale-105 transition-all duration-200 shadow-lg"
+              className="inline-block bg-gradient-to-r from-accent-orange to-accent-yellow text-white font-bold py-4 px-8 rounded-xl text-lg hover:from-orange-600 hover:to-yellow-500 transform hover:scale-105 transition-all duration-200 shadow-lg border-2 border-white"
             >
-              CONHECER A ÂNGELA VIRGOLIM
+              QUERO PARTICIPAR DA LIVE
             </a>
           </div>
         </div>
@@ -428,9 +431,9 @@ export default function Home() {
             <div className="mt-12">
               <a 
                 href="#form" 
-                className="inline-block bg-gradient-to-r from-accent-orange to-accent-yellow text-white font-bold py-6 px-12 rounded-xl text-2xl hover:from-orange-600 hover:to-yellow-500 transform hover:scale-105 transition-all duration-200 shadow-2xl"
+                className="inline-block bg-gradient-to-r from-accent-orange to-accent-yellow text-white font-bold py-6 px-12 rounded-xl text-2xl hover:from-orange-600 hover:to-yellow-500 transform hover:scale-105 transition-all duration-200 shadow-2xl border-2 border-white"
               >
-                QUERO GARANTIR MINHA VAGA GRATUITA
+                QUERO PARTICIPAR DA LIVE
               </a>
             </div>
           </div>

@@ -10,8 +10,8 @@ export default function ProgressBar({ progress, label }: ProgressBarProps) {
     <div className="w-full max-w-md mx-auto">
       {label && (
         <div className="flex justify-between items-center mb-2">
-          <span className="text-sm font-medium text-gray-700">{label}</span>
-          <span className="text-sm font-medium text-gray-700">{progress}%</span>
+          <span className="text-sm font-medium text-white">{label}</span>
+          <span className="text-sm font-medium text-white">{progress}%</span>
         </div>
       )}
       <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">

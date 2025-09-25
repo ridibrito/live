@@ -21,6 +21,19 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 2rem;
+}
+
+/* Rolagem mais suave e lenta para âncoras */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Transição personalizada para rolagem */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
