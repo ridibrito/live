@@ -31,24 +31,27 @@ export default function RegistrationForm() {
     setIsSubmitting(true);
     
     try {
-      // Simular delay de processamento
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      console.log('Formulário enviado com sucesso:', data);
-      console.log('📝 Dados que serão processados pelo Mautic:', {
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
-        occupation: data.occupation,
-        source: 'live-aldeia-singular',
-        tags: ['live-aldeia', 'formulario-inscricao']
+      // Enviar dados para o Mautic via API
+      const response = await fetch('/api/mautic', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
       });
+
+      if (!response.ok) {
+        throw new Error('Erro ao enviar formulário');
+      }
+
+      const result = await response.json();
+      console.log('Lead enviado para Mautic com sucesso:', result);
       
       // Redirecionar para página de agradecimento
       router.push('/obrigado');
     } catch (error) {
-      console.error('Erro ao processar formulário:', error);
-      alert('Erro ao processar formulário. Tente novamente.');
+      console.error('Erro ao enviar formulário:', error);
+      alert('Erro ao enviar formulário. Tente novamente.');
     } finally {
       setIsSubmitting(false);
     }

@@ -53,8 +53,17 @@ export async function POST(request: NextRequest) {
 
   // Configuração do Mautic
   const mauticUrl = 'https://email.coruss.com.br';
-  const publicKey = '1_1yfuhaq4q3y8sckok8ossgo440c404okcws08kgggw80kowwsg';
-  const secretKey = '2892h1bx7askcog880844os4ossk80k0o4cwkccck4o8ss8o4o';
+  // Usar credenciais de usuário/senha do Mautic
+  const mauticUsername = process.env.MAUTIC_USERNAME;
+  const mauticPassword = process.env.MAUTIC_PASSWORD;
+  
+  if (!mauticUsername || !mauticPassword) {
+    console.error('❌ Credenciais do Mautic não configuradas');
+    return NextResponse.json(
+      { message: 'Configuração ausente (MAUTIC_USERNAME/MAUTIC_PASSWORD)' },
+      { status: 500 }
+    );
+  }
 
   // Dados para o Mautic
   const mauticData = {
@@ -83,7 +92,7 @@ export async function POST(request: NextRequest) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Basic ${Buffer.from(`${publicKey}:${secretKey}`).toString('base64')}`,
+        'Authorization': `Basic ${Buffer.from(`${mauticUsername}:${mauticPassword}`).toString('base64')}`,
         'User-Agent': 'Live-Aldeia-Form/1.0'
       },
       body: JSON.stringify(mauticData),
