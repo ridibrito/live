@@ -22,8 +22,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // URL do webhook do N8N (usando URL de teste temporariamente)
-    const webhookUrl = 'https://editor.coruss.com.br/webhook-test/live_aldeia';
+    // URL do webhook do N8N de produção
+    const webhookUrl = 'https://webhook.coruss.com.br/webhook/live_aldeia';
     console.log('🔗 URL do webhook sendo disparada:', webhookUrl);
     console.log('📡 Método HTTP:', 'POST');
     console.log('📋 Dados sendo enviados:', JSON.stringify(formData, null, 2));
