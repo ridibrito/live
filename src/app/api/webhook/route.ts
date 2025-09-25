@@ -114,9 +114,9 @@ export async function POST(request: NextRequest) {
       source: 'n8n',
       timestamp: ts,
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
     // Timeout e outros erros de rede
-    const isAbort = err?.name === 'AbortError';
+    const isAbort = err instanceof Error && err.name === 'AbortError';
     console.error(isAbort ? '⏰ Timeout de 30s' : '❌ Erro ao contatar N8N', err);
 
     // Aqui você decide: 502 para o front (recomendo) ou fallback local
