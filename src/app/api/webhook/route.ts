@@ -5,6 +5,7 @@ export async function POST(request: NextRequest) {
   console.log('Timestamp:', new Date().toISOString());
   console.log('User Agent:', request.headers.get('user-agent'));
   console.log('Content-Type:', request.headers.get('content-type'));
+  console.log('🚀 Função POST iniciada com sucesso');
   
   try {
     // Captura todos os dados enviados no corpo da requisição
