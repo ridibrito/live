@@ -59,7 +59,7 @@ export default function RegistrationForm() {
 
   return (
     <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl max-w-md w-full mx-4">
-      <h2 className="text-xl lg:text-2xl font-bold text-primary-dark mb-6 text-center">
+      <h2 className="text-xl lg:text-2xl font-bold text-[#F5AF21] mb-6 text-center">
         Garanta sua vaga gratuita
       </h2>
       
