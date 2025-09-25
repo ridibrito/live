@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
       // Se a requisição para o N8N for bem-sucedida
       if (n8nResponse.ok) {
         const n8nData = await n8nResponse.text();
-        console.log('Dados enviados com sucesso para o N8N:', n8nData);
+        console.log('✅ Dados enviados com sucesso para o N8N:', n8nData);
         return NextResponse.json({ 
           message: 'Dados enviados com sucesso para o N8N!',
           source: 'n8n',
@@ -85,6 +85,9 @@ export async function POST(request: NextRequest) {
           console.error('🚨 ATENÇÃO: Workflow do N8N não está ativo!');
           console.error('📋 Ação necessária: Ativar o workflow no N8N');
         }
+        
+        // Se não funcionou, continua para o fallback local
+        console.log('⚠️ Webhook falhou, usando fallback local...');
       }
     } catch (n8nError) {
       console.error('❌ Erro ao conectar com N8N:', {

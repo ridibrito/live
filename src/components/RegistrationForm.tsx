@@ -46,6 +46,8 @@ export default function RegistrationForm() {
 
       const result = await response.json();
       console.log('Dados enviados com sucesso:', result);
+      console.log('🔍 Debug - Source:', result.source);
+      console.log('🔍 Debug - Message:', result.message);
       
       // Redirecionar para página de agradecimento
       router.push('/obrigado');
