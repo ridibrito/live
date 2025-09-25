@@ -67,9 +67,9 @@ export async function POST(request: NextRequest) {
       }
     } catch (n8nError) {
       console.warn('Erro ao conectar com N8N:', {
-        name: n8nError.name,
-        message: n8nError.message,
-        stack: n8nError.stack
+        name: n8nError instanceof Error ? n8nError.name : 'Unknown',
+        message: n8nError instanceof Error ? n8nError.message : String(n8nError),
+        stack: n8nError instanceof Error ? n8nError.stack : undefined
       });
     }
 
@@ -100,14 +100,14 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Erro no processamento da API:', {
-      name: error.name,
-      message: error.message,
-      stack: error.stack
+      name: error instanceof Error ? error.name : 'Unknown',
+      message: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined
     });
     return NextResponse.json(
       { 
         message: 'Erro interno do servidor.',
-        error: process.env.NODE_ENV === 'development' ? error.message : undefined
+        error: process.env.NODE_ENV === 'development' ? (error instanceof Error ? error.message : String(error)) : undefined
       },
       { status: 500 }
     );
