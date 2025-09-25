@@ -21,15 +21,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // URL do webhook do N8N de produção
-    const webhookUrl = 'https://webhook.coruss.com.br/webhook/live_aldeia';
-    console.log('Tentando conectar com N8N:', webhookUrl);
+    // URL do webhook do N8N (usando URL de teste temporariamente)
+    const webhookUrl = 'https://editor.coruss.com.br/webhook-test/live_aldeia';
+    console.log('🔗 URL do webhook sendo disparada:', webhookUrl);
+    console.log('📡 Método HTTP:', 'POST');
+    console.log('📋 Dados sendo enviados:', JSON.stringify(formData, null, 2));
 
     try {
       // Tenta fazer a requisição para o N8N com timeout
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 segundos timeout
 
+      console.log('🚀 Iniciando requisição para N8N...');
+      console.log('📤 Headers da requisição:', {
+        'Content-Type': 'application/json',
+        'User-Agent': 'Live-Aldeia-Form/1.0'
+      });
+      
       const n8nResponse = await fetch(webhookUrl, {
         method: 'POST',
         headers: {
@@ -38,6 +46,12 @@ export async function POST(request: NextRequest) {
         },
         body: JSON.stringify(formData),
         signal: controller.signal
+      });
+      
+      console.log('📥 Resposta recebida do N8N:', {
+        status: n8nResponse.status,
+        statusText: n8nResponse.statusText,
+        url: n8nResponse.url
       });
 
       clearTimeout(timeoutId);
