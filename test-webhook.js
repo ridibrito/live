@@ -12,9 +12,9 @@ const testData = {
 const postData = JSON.stringify(testData);
 
 const options = {
-  hostname: 'webhook.coruss.com.br',
+  hostname: 'hook.eu2.make.com',
   port: 443,
-  path: '/webhook/live_aldeia_v2',
+  path: '/45uxt6turwdkgkrgopgxmvwqaxr4ojgi',
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
