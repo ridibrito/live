@@ -60,11 +60,11 @@ export async function POST(request: NextRequest) {
     phone: parsed.data.phone.replace(/\D/g, ''),
   };
 
-  const webhookUrl = process.env.N8N_WEBHOOK_URL; // ex.: https://webhook.coruss.com.br/webhook/live_aldeia
+  const webhookUrl = process.env.MAKE_WEBHOOK_URL; // ex.: https://hook.eu2.make.com/45uxt6turwdkgkrgopgxmvwqaxr4ojgi
   if (!webhookUrl) {
-    console.error('❌ N8N_WEBHOOK_URL não configurada');
+    console.error('❌ MAKE_WEBHOOK_URL não configurada');
     return NextResponse.json(
-      { message: 'Configuração ausente (N8N_WEBHOOK_URL)' },
+      { message: 'Configuração ausente (MAKE_WEBHOOK_URL)' },
       { status: 500 }
     );
   }
