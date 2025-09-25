@@ -97,8 +97,7 @@ export default function Home() {
                   A jornada de criar um filho com altas habilidades pode e deve ser mais leve. <span className="text-[#F5AF21] underline decoration-[#F5AF21] decoration-2 underline-offset-4">Chegou a hora de cuidar de quem cuida.</span>
                 </h1>
                 <p className="text-lg lg:text-xl text-white/90 leading-relaxed">
-                  Participe do nosso encontro online e gratuito, pensado para cuidar de quem cuida. Descubra caminhos para fortalecer seu filho e, principalmente, para se fortalecer como mães e pais de filhos com altas habilidades e superdotação.
-                </p>
+                Encontro online e gratuito pensado para descobrir caminhos para fortalecer seu filho e se fortalecer como mães e pais de filhos com altas habilidades e superdotação.                </p>
               </div>
               
               {/* Destaque do Evento */}
