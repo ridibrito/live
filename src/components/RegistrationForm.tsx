@@ -35,6 +35,14 @@ export default function RegistrationForm() {
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       console.log('Formulário enviado com sucesso:', data);
+      console.log('📝 Dados que serão processados pelo Mautic:', {
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        occupation: data.occupation,
+        source: 'live-aldeia-singular',
+        tags: ['live-aldeia', 'formulario-inscricao']
+      });
       
       // Redirecionar para página de agradecimento
       router.push('/obrigado');
