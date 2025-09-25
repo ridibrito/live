@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     try {
       // Tenta fazer a requisição para o N8N com timeout
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 segundos timeout
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 segundos timeout
 
       const n8nResponse = await fetch(webhookUrl, {
         method: 'POST',
