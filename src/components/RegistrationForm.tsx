@@ -31,29 +31,16 @@ export default function RegistrationForm() {
     setIsSubmitting(true);
     
     try {
-      // Enviar dados para o webhook da API
-      const response = await fetch('/api/webhook', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw new Error('Erro ao enviar formulário');
-      }
-
-      const result = await response.json();
-      console.log('Dados enviados com sucesso:', result);
-      console.log('🔍 Debug - Source:', result.source);
-      console.log('🔍 Debug - Message:', result.message);
+      // Simular delay de processamento
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      console.log('Formulário enviado com sucesso:', data);
       
       // Redirecionar para página de agradecimento
       router.push('/obrigado');
     } catch (error) {
-      console.error('Erro ao enviar formulário:', error);
-      alert('Erro ao enviar formulário. Tente novamente.');
+      console.error('Erro ao processar formulário:', error);
+      alert('Erro ao processar formulário. Tente novamente.');
     } finally {
       setIsSubmitting(false);
     }
