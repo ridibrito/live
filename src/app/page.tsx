@@ -1,6 +1,9 @@
+'use client';
+
 import RegistrationForm from '@/components/RegistrationForm';
 import Section from '@/components/Section';
 import Image from 'next/image';
+import { useState } from 'react';
 import { 
   CalendarDaysIcon, 
   ClockIcon, 
@@ -16,19 +19,80 @@ import {
 } from '@heroicons/react/24/outline';
 
 export default function Home() {
+  const [currentLogoIndex, setCurrentLogoIndex] = useState(0);
+  const [currentColorIndex, setCurrentColorIndex] = useState(0);
+  
+  const logos = [
+    { src: '/horizontal.png', alt: 'Logo Horizontal' },
+    { src: '/allWhite.png', alt: 'Logo All White' },
+    { src: '/white.png', alt: 'Logo White' }
+  ];
+
+  const colors = [
+    { name: 'Laranja', textColor: 'text-accent-orange', decorationColor: 'decoration-accent-orange' },
+    { name: 'Amarelo', textColor: 'text-[#F5AF21]', decorationColor: 'decoration-[#F5AF21]' }
+  ];
+
   return (
     <main className="min-h-screen">
       {/* DOBRA 1: A Promessa e a Ação Imediata */}
       <section id="form" className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-dark via-primary-purple to-primary-dark">
         <div className="absolute inset-0 bg-black/50"></div>
         <div className="relative z-10 container mx-auto px-6 py-20">
+          {/* Logo Principal - Carrossel */}
+          <div className="flex justify-center mb-12">
+            <div className="relative">
+              <Image
+                src={logos[currentLogoIndex].src}
+                alt={logos[currentLogoIndex].alt}
+                width={300}
+                height={100}
+                className="object-contain"
+                priority
+              />
+              
+              {/* Indicadores do carrossel */}
+              <div className="flex justify-center space-x-2 mt-4">
+                {logos.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentLogoIndex(index)}
+                    className={`w-3 h-3 rounded-full transition-all duration-200 ${
+                      index === currentLogoIndex 
+                        ? 'bg-accent-orange' 
+                        : 'bg-white/50 hover:bg-white/70'
+                    }`}
+                    aria-label={`Mostrar logo ${index + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+          
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Conteúdo do Hero */}
             <div className="text-white space-y-8">
               <div className="space-y-6">
-                <h1 className="text-4xl lg:text-4xl font-bold leading-tight">
-                  A jornada de criar um filho com altas habilidades pode e deve ser mais leve. Chegou a hora de cuidar de quem cuida.
+                <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight">
+                  A jornada de criar um filho com altas habilidades pode e deve ser mais leve. <span className={`${colors[currentColorIndex].textColor} underline ${colors[currentColorIndex].decorationColor} decoration-2 underline-offset-4`}>Chegou a hora de cuidar de quem cuida.</span>
                 </h1>
+                
+                {/* Indicadores de cor para o texto destacado */}
+                <div className="flex justify-center space-x-3 mt-4">
+                  {colors.map((color, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentColorIndex(index)}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                        index === currentColorIndex 
+                          ? 'bg-white/20 text-white border-2 border-white' 
+                          : 'bg-white/10 text-white/70 hover:bg-white/15'
+                      }`}
+                    >
+                      {color.name}
+                    </button>
+                  ))}
+                </div>
                 <p className="text-lg lg:text-xl text-white/90 leading-relaxed">
                   Participe do nosso encontro online e gratuito, pensado para cuidar de quem cuida. Descubra caminhos para fortalecer seu filho e, principalmente, para se fortalecer como mães e pais de filhos com altas habilidades e superdotação.
                 </p>
@@ -77,8 +141,8 @@ export default function Home() {
               <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                 <QuestionMarkCircleIcon className="w-5 h-5 text-white" />
               </div>
-              <p className="text-base lg:text-lg text-gray-700">
-                ... sentem-se perdidos, tentando entender se os comportamentos intensos e a curiosidade insaciável do seu filho são, de fato, sinais de altas habilidades.
+              <p className="text-base lg:text-lg text-gray-700 text-left">
+                sentem-se perdidos, tentando entender se os comportamentos intensos e a curiosidade insaciável do seu filho são, de fato, sinais de altas habilidades.
               </p>
             </div>
 
@@ -86,8 +150,8 @@ export default function Home() {
               <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                 <HeartIcon className="w-5 h-5 text-white" />
               </div>
-              <p className="text-base lg:text-lg text-gray-700">
-                ... percebem a falta de apoio da escola e até da família, ouvindo que é &quot;apenas uma fase&quot; ou &quot;coisa de criança inteligente&quot;.
+              <p className="text-base lg:text-lg text-gray-700 text-left">
+                percebem a falta de apoio da escola e até da família, ouvindo que é &quot;apenas uma fase&quot; ou &quot;coisa de criança inteligente&quot;.
               </p>
             </div>
 
@@ -95,8 +159,8 @@ export default function Home() {
               <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                 <LightBulbIcon className="w-5 h-5 text-white" />
               </div>
-              <p className="text-base lg:text-lg text-gray-700">
-                ... buscam conhecimento confiável, mas se deparam com um oceano de informações confusas e mitos que mais atrapalham do que ajudam.
+              <p className="text-base lg:text-lg text-gray-700 text-left">
+                buscam conhecimento confiável, mas se deparam com um oceano de informações confusas e mitos que mais atrapalham do que ajudam.
               </p>
             </div>
 
@@ -104,8 +168,8 @@ export default function Home() {
               <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                 <DocumentTextIcon className="w-5 h-5 text-white" />
               </div>
-              <p className="text-base lg:text-lg text-gray-700">
-                ... se perguntam, no silêncio do fim do dia, se estão fazendo o suficiente e como podem verdadeiramente ajudar seu filho a florescer sem se sentirem esgotados.
+              <p className="text-base lg:text-lg text-gray-700 text-left">
+                se perguntam, no silêncio do fim do dia, se estão fazendo o suficiente e como podem verdadeiramente ajudar seu filho a florescer sem se sentirem esgotados.
               </p>
             </div>
 
@@ -113,16 +177,22 @@ export default function Home() {
               <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                 <UserGroupIcon className="w-5 h-5 text-white" />
               </div>
-              <p className="text-base lg:text-lg text-gray-700">
-                ... anseiam por conversar com outros pais que entendem exatamente o que vocês estão sentindo, sem julgamentos ou conselhos vazios.
+              <p className="text-base lg:text-lg text-gray-700 text-left">
+                anseiam por conversar com outros pais que entendem exatamente o que vocês estão sentindo, sem julgamentos ou conselhos vazios.
               </p>
             </div>
           </div>
 
-          <div className="mt-12 p-8 bg-primary-purple rounded-2xl text-white">
-            <p className="text-xl font-semibold">
+          <div className="mt-12 text-center">
+            <p className="text-2xl lg:text-3xl font-bold text-accent-orange mb-8">
               ... então este encontro foi desenhado para vocês.
             </p>
+            <a 
+              href="#form" 
+              className="inline-block bg-gradient-to-r from-accent-orange to-accent-yellow text-white font-bold py-4 px-8 rounded-xl text-lg hover:from-orange-600 hover:to-yellow-500 transform hover:scale-105 transition-all duration-200 shadow-lg"
+            >
+              QUERO PARTICIPAR GRATUITAMENTE
+            </a>
           </div>
         </div>
       </Section>
@@ -204,6 +274,15 @@ export default function Home() {
                 </div>
               </div>
             </div>
+          </div>
+          
+          <div className="mt-12 text-center">
+            <a 
+              href="#form" 
+              className="inline-block bg-gradient-to-r from-accent-orange to-accent-yellow text-white font-bold py-4 px-8 rounded-xl text-lg hover:from-orange-600 hover:to-yellow-500 transform hover:scale-105 transition-all duration-200 shadow-lg"
+            >
+              QUERO SABER MAIS SOBRE O ENCONTRO
+            </a>
           </div>
         </div>
       </Section>
@@ -292,6 +371,15 @@ export default function Home() {
               </div>
             </div>
           </div>
+          
+          <div className="mt-12 text-center">
+            <a 
+              href="#form" 
+              className="inline-block bg-gradient-to-r from-accent-orange to-accent-yellow text-white font-bold py-4 px-8 rounded-xl text-lg hover:from-orange-600 hover:to-yellow-500 transform hover:scale-105 transition-all duration-200 shadow-lg"
+            >
+              CONHECER A ÂNGELA VIRGOLIM
+            </a>
+          </div>
         </div>
       </Section>
 
@@ -314,20 +402,20 @@ export default function Home() {
                   <p className="text-lg text-white/90">Este encontro é totalmente gratuito</p>
                 </div>
                 
-                <div className="space-y-4">
-                  <div className="flex items-center justify-center space-x-3">
+                <div className="space-y-4 text-left">
+                  <div className="flex items-center space-x-3">
                     <div className="w-6 h-6 bg-accent-orange rounded-full flex items-center justify-center">
                       <CheckCircleIcon className="w-4 h-4 text-white" />
                     </div>
                     <span className="text-white/90">Acesso imediato ao grupo do WhatsApp</span>
                   </div>
-                  <div className="flex items-center justify-center space-x-3">
+                  <div className="flex items-center space-x-3">
                     <div className="w-6 h-6 bg-accent-orange rounded-full flex items-center justify-center">
                       <CheckCircleIcon className="w-4 h-4 text-white" />
                     </div>
                     <span className="text-white/90">Material exclusivo preparatório</span>
                   </div>
-                  <div className="flex items-center justify-center space-x-3">
+                  <div className="flex items-center space-x-3">
                     <div className="w-6 h-6 bg-accent-orange rounded-full flex items-center justify-center">
                       <CheckCircleIcon className="w-4 h-4 text-white" />
                     </div>
