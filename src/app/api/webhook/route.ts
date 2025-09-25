@@ -10,14 +10,15 @@ export async function POST(request: NextRequest) {
   try {
     // Captura todos os dados enviados no corpo da requisição
     let formData;
+    let rawBody;
     try {
-      const rawBody = await request.text();
+      rawBody = await request.text();
       console.log('📥 Raw body recebido:', rawBody);
       formData = JSON.parse(rawBody);
     } catch (jsonError) {
       console.error('❌ Erro ao fazer parse do JSON:', {
         error: jsonError instanceof Error ? jsonError.message : String(jsonError),
-        body: rawBody
+        body: rawBody || 'N/A'
       });
       return NextResponse.json(
         { message: 'Erro no formato dos dados enviados.' },
