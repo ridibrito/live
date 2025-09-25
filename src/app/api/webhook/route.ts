@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     } catch (jsonError) {
       console.error('❌ Erro ao fazer parse do JSON:', {
         error: jsonError instanceof Error ? jsonError.message : String(jsonError),
-        body: await request.text()
+        body: rawBody
       });
       return NextResponse.json(
         { message: 'Erro no formato dos dados enviados.' },
