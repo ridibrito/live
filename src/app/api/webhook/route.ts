@@ -1,161 +1,133 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+
+export const dynamic = 'force-dynamic'; // garante que não será estático
+
+const formSchema = z.object({
+  name: z.string().min(2),
+  email: z.string().email(),
+  phone: z.string().min(10),
+  occupation: z.string().min(2),
+  // campos opcionais que você pode enviar do front
+  utm_source: z.string().nullable().optional(),
+  utm_medium: z.string().nullable().optional(),
+  utm_campaign: z.string().nullable().optional(),
+  gclid: z.string().nullable().optional(),
+  page: z.string().nullable().optional(),
+  referrer: z.string().nullable().optional(),
+  submittedAt: z.string().nullable().optional(),
+});
 
 export async function POST(request: NextRequest) {
-  console.log('=== WEBHOOK API CHAMADA ===');
-  console.log('Timestamp:', new Date().toISOString());
-  console.log('User Agent:', request.headers.get('user-agent'));
-  console.log('Content-Type:', request.headers.get('content-type'));
-  console.log('🚀 Função POST iniciada com sucesso');
-  
+  const ts = new Date().toISOString();
+  console.log('=== WEBHOOK API CHAMADA ===', { ts });
+  console.log('UA:', request.headers.get('user-agent'));
+  console.log('CT:', request.headers.get('content-type'));
+
+  let rawBody = '';
   try {
-    // Captura todos os dados enviados no corpo da requisição
-    let formData;
-    let rawBody;
-    try {
-      rawBody = await request.text();
-      console.log('📥 Raw body recebido:', rawBody);
-      formData = JSON.parse(rawBody);
-    } catch (jsonError) {
-      console.error('❌ Erro ao fazer parse do JSON:', {
-        error: jsonError instanceof Error ? jsonError.message : String(jsonError),
-        body: rawBody || 'N/A'
-      });
-      return NextResponse.json(
-        { message: 'Erro no formato dos dados enviados.' },
-        { status: 400 }
-      );
+    rawBody = await request.text();
+    // Evite logar corpo inteiro em produção
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('📥 Raw body (truncado):', rawBody.slice(0, 500));
     }
-    
-    console.log('✅ Dados recebidos:', JSON.stringify(formData, null, 2));
+  } catch (e) {
+    console.error('❌ Falha ao ler body:', e);
+    return NextResponse.json({ message: 'Body inválido' }, { status: 400 });
+  }
 
-    // Validação básica dos dados
-    if (!formData.name || !formData.email || !formData.phone || !formData.occupation) {
-      console.error('Dados incompletos recebidos:', formData);
-      return NextResponse.json(
-        { message: 'Dados incompletos. Todos os campos são obrigatórios.' },
-        { status: 400 }
-      );
-    }
+  // Parse + validação
+  let payload: unknown;
+  try {
+    payload = JSON.parse(rawBody);
+  } catch (e) {
+    console.error('❌ JSON inválido:', e);
+    return NextResponse.json({ message: 'JSON inválido' }, { status: 400 });
+  }
 
-    // URL do webhook do N8N de produção
-    const webhookUrl = 'https://webhook.coruss.com.br/webhook/live_aldeia';
-    console.log('🔗 URL do webhook sendo disparada:', webhookUrl);
-    console.log('📡 Método HTTP:', 'POST');
-    console.log('📋 Dados sendo enviados:', JSON.stringify(formData, null, 2));
-
-    try {
-      // Tenta fazer a requisição para o N8N com timeout
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 segundos timeout
-
-      console.log('🚀 Iniciando requisição para N8N...');
-      console.log('📤 Headers da requisição:', {
-        'Content-Type': 'application/json',
-        'User-Agent': 'Live-Aldeia-Form/1.0'
-      });
-      
-      const n8nResponse = await fetch(webhookUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'User-Agent': 'Live-Aldeia-Form/1.0'
-        },
-        body: JSON.stringify(formData),
-        signal: controller.signal
-      });
-      
-      console.log('📥 Resposta recebida do N8N:', {
-        status: n8nResponse.status,
-        statusText: n8nResponse.statusText,
-        url: n8nResponse.url
-      });
-
-      clearTimeout(timeoutId);
-
-      console.log('Resposta do N8N:', {
-        status: n8nResponse.status,
-        statusText: n8nResponse.statusText,
-        headers: Object.fromEntries(n8nResponse.headers.entries())
-      });
-
-      // Se a requisição para o N8N for bem-sucedida
-      if (n8nResponse.ok) {
-        const n8nData = await n8nResponse.text();
-        console.log('✅ Dados enviados com sucesso para o N8N:', n8nData);
-        return NextResponse.json({ 
-          message: 'Dados enviados com sucesso para o N8N!',
-          source: 'n8n',
-          timestamp: new Date().toISOString()
-        });
-      } else {
-        const errorText = await n8nResponse.text();
-        console.error('❌ N8N retornou erro:', {
-          status: n8nResponse.status,
-          statusText: n8nResponse.statusText,
-          body: errorText,
-          url: webhookUrl
-        });
-        
-        // Log específico para workflow não ativo
-        if (n8nResponse.status === 404 && errorText.includes('not registered')) {
-          console.error('🚨 ATENÇÃO: Workflow do N8N não está ativo!');
-          console.error('📋 Ação necessária: Ativar o workflow no N8N');
-        }
-        
-        // Se não funcionou, continua para o fallback local
-        console.log('⚠️ Webhook falhou, usando fallback local...');
-      }
-    } catch (n8nError) {
-      console.error('❌ Erro ao conectar com N8N:', {
-        name: n8nError instanceof Error ? n8nError.name : 'Unknown',
-        message: n8nError instanceof Error ? n8nError.message : String(n8nError),
-        stack: n8nError instanceof Error ? n8nError.stack : undefined,
-        url: webhookUrl
-      });
-      
-      // Log específico para timeout
-      if (n8nError instanceof Error && n8nError.name === 'AbortError') {
-        console.error('⏰ Timeout: N8N não respondeu em 10 segundos');
-      }
-    }
-
-    // Fallback: salvar dados localmente (logs detalhados)
-    console.log('=== INSCRIÇÃO SALVA LOCALMENTE ===');
-    console.log('Nome:', formData.name);
-    console.log('Email:', formData.email);
-    console.log('Telefone:', formData.phone);
-    console.log('Ocupação:', formData.occupation);
-    console.log('Timestamp:', new Date().toISOString());
-    console.log('=====================================');
-
-    // Simular delay de processamento
-    await new Promise(resolve => setTimeout(resolve, 500));
-
-    // Retorna sucesso mesmo sem N8N
-    return NextResponse.json({ 
-      message: 'Inscrição realizada com sucesso!',
-      source: 'local',
-      data: {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        occupation: formData.occupation,
-        timestamp: new Date().toISOString()
-      }
-    });
-
-  } catch (error) {
-    console.error('Erro no processamento da API:', {
-      name: error instanceof Error ? error.name : 'Unknown',
-      message: error instanceof Error ? error.message : String(error),
-      stack: error instanceof Error ? error.stack : undefined
-    });
+  const parsed = formSchema.safeParse(payload);
+  if (!parsed.success) {
+    console.error('❌ Validação falhou:', parsed.error.flatten());
     return NextResponse.json(
-      { 
-        message: 'Erro interno do servidor.',
-        error: process.env.NODE_ENV === 'development' ? (error instanceof Error ? error.message : String(error)) : undefined
-      },
+      { message: 'Dados inválidos', issues: parsed.error.flatten() },
+      { status: 400 }
+    );
+  }
+
+  // Normalização simples: manter apenas dígitos no phone
+  const data = {
+    ...parsed.data,
+    phone: parsed.data.phone.replace(/\D/g, ''),
+  };
+
+  const webhookUrl = process.env.N8N_WEBHOOK_URL; // ex.: https://webhook.coruss.com.br/webhook/live_aldeia
+  if (!webhookUrl) {
+    console.error('❌ N8N_WEBHOOK_URL não configurada');
+    return NextResponse.json(
+      { message: 'Configuração ausente (N8N_WEBHOOK_URL)' },
       { status: 500 }
     );
+  }
+
+  const controller = new AbortController();
+  const TIMEOUT_MS = 30000; // 30s
+  const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
+
+  try {
+    console.log('🔗 Disparando para N8N:', webhookUrl);
+    const n8nResponse = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+      signal: controller.signal,
+    });
+
+    const n8nText = await n8nResponse.text();
+
+    console.log('📥 Resposta N8N:', {
+      status: n8nResponse.status,
+      statusText: n8nResponse.statusText,
+      len: n8nText.length,
+    });
+
+    if (!n8nResponse.ok) {
+      // log específico útil quando workflow não está ativo
+      if (n8nResponse.status === 404 && n8nText.includes('not registered')) {
+        console.error('🚨 Workflow do N8N não está ativo!');
+      }
+      // Retorne erro para o front (ou 200 com ok:false se preferir)
+      return NextResponse.json(
+        {
+          ok: false,
+          message: 'Falha ao enviar ao N8N',
+          status: n8nResponse.status,
+          body: process.env.NODE_ENV !== 'production' ? n8nText : undefined,
+        },
+        { status: 502 }
+      );
+    }
+
+    // Sucesso
+    return NextResponse.json({
+      ok: true,
+      message: 'Dados enviados com sucesso para o N8N!',
+      source: 'n8n',
+      timestamp: ts,
+    });
+  } catch (err: any) {
+    // Timeout e outros erros de rede
+    const isAbort = err?.name === 'AbortError';
+    console.error(isAbort ? '⏰ Timeout de 30s' : '❌ Erro ao contatar N8N', err);
+
+    // Aqui você decide: 502 para o front (recomendo) ou fallback local
+    return NextResponse.json(
+      {
+        ok: false,
+        message: isAbort ? 'Timeout ao enviar para o N8N' : 'Erro de rede ao enviar para o N8N',
+      },
+      { status: 502 }
+    );
+  } finally {
+    clearTimeout(timeoutId);
   }
 }
