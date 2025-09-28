@@ -60,7 +60,11 @@ export default function RegistrationForm() {
     
     try {
       // Enviar dados para a API route que processará o webhook
-      const response = await fetch('/api/webhook-n8n', {
+      // Usar URL absoluta para funcionar em produção
+      const apiUrl = `${window.location.origin}/api/webhook-n8n`;
+      console.log('🔄 Enviando dados para API:', apiUrl, data);
+      
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -69,12 +73,20 @@ export default function RegistrationForm() {
       });
 
       const result = await response.json();
+      
+      console.log('📊 Resposta da API:', {
+        status: response.status,
+        ok: response.ok,
+        result: result,
+        url: apiUrl
+      });
 
       if (!response.ok) {
+        console.error('❌ Erro na API:', result);
         throw new Error(result.error || 'Erro ao processar inscrição');
       }
 
-      console.log('Formulário enviado com sucesso:', result);
+      console.log('✅ Formulário enviado com sucesso:', result);
       
       // Redirecionar para página de agradecimento
       router.push('/obrigado');

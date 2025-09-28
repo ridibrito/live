@@ -38,49 +38,81 @@ export async function POST(request: NextRequest) {
     };
 
     // Enviar dados para o webhook do N8N
-    // Verificar se há uma URL personalizada via variável de ambiente
-    const customWebhookUrl = process.env.N8N_WEBHOOK_URL;
-    // URL do webhook em produção (workflow ativo)
-    const webhookUrl = customWebhookUrl || 'https://editor.coruss.com.br/webhook/live_aldeia_v2';
+    // URLs para tentar (produção e teste como fallback)
+    const webhookUrls = [
+      'https://editor.coruss.com.br/webhook/live_aldeia_v2', // Produção
+      'https://editor.coruss.com.br/webhook-test/live_aldeia_v2' // Teste como fallback
+    ];
     
-    try {
-      console.log('🔄 Enviando dados para webhook N8N em produção:', {
-        url: webhookUrl,
-        data: webhookData
-      });
+    let webhookSuccess = false;
+    let lastError = null;
 
-      const webhookResponse = await fetch(webhookUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(webhookData),
-      });
-
-      const responseText = await webhookResponse.text();
-      
-      if (webhookResponse.ok) {
-        console.log('✅ Dados enviados com sucesso para o webhook N8N:', {
-          status: webhookResponse.status,
-          response: responseText,
+    // Tentar cada URL de webhook até encontrar uma que funcione
+    for (const webhookUrl of webhookUrls) {
+      try {
+        console.log('🔄 Tentando enviar dados para webhook N8N:', {
           url: webhookUrl,
-          data: webhookData
+          data: webhookData,
+          timestamp: new Date().toISOString()
         });
-      } else {
-        console.error('❌ Erro ao enviar para webhook N8N:', {
+
+        const webhookResponse = await fetch(webhookUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'User-Agent': 'Live-Aldeia-Singular/1.0',
+          },
+          body: JSON.stringify(webhookData),
+        });
+
+        const responseText = await webhookResponse.text();
+        
+        console.log('📊 Resposta do webhook N8N:', {
           status: webhookResponse.status,
           statusText: webhookResponse.statusText,
           response: responseText,
-          url: webhookUrl
+          url: webhookUrl,
+          timestamp: new Date().toISOString()
         });
-        console.log('📝 Dados processados localmente (webhook com erro):', webhookData);
+        
+        if (webhookResponse.ok) {
+          console.log('✅ Dados enviados com sucesso para o webhook N8N:', {
+            status: webhookResponse.status,
+            response: responseText,
+            url: webhookUrl,
+            data: webhookData,
+            timestamp: new Date().toISOString()
+          });
+          webhookSuccess = true;
+          break; // Sair do loop se conseguir enviar
+        } else {
+          console.error('❌ Erro ao enviar para webhook N8N:', {
+            status: webhookResponse.status,
+            statusText: webhookResponse.statusText,
+            response: responseText,
+            url: webhookUrl,
+            timestamp: new Date().toISOString()
+          });
+          lastError = { status: webhookResponse.status, response: responseText, url: webhookUrl };
+        }
+      } catch (webhookError) {
+        console.error('❌ Erro de conexão com webhook N8N:', {
+          error: webhookError.message,
+          stack: webhookError.stack,
+          url: webhookUrl,
+          timestamp: new Date().toISOString()
+        });
+        lastError = { error: webhookError.message, url: webhookUrl };
       }
-    } catch (webhookError) {
-      console.error('❌ Erro de conexão com webhook N8N:', {
-        error: webhookError,
-        url: webhookUrl
-      });
-      console.log('📝 Dados processados localmente (erro de conexão):', webhookData);
+    }
+
+    // Se nenhum webhook funcionou, logar o erro final
+    if (!webhookSuccess) {
+      console.error('❌ Nenhum webhook N8N funcionou. Último erro:', lastError);
+      console.log('📝 Dados processados localmente (nenhum webhook disponível):', webhookData);
+      
+      // Salvar dados em arquivo local como backup (opcional)
+      console.log('💾 DADOS PARA BACKUP MANUAL:', JSON.stringify(webhookData, null, 2));
     }
 
     return NextResponse.json(
