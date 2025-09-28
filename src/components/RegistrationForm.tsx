@@ -9,7 +9,9 @@ import { useRouter } from 'next/navigation';
 const formSchema = z.object({
   name: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres'),
   email: z.string().email('Email inválido'),
-  phone: z.string().min(10, 'Telefone deve ter pelo menos 10 dígitos'),
+  phone: z.string()
+    .min(14, 'Telefone deve ter pelo menos 10 dígitos')
+    .regex(/^\(\d{2}\) \d{4,5}-\d{4}$/, 'Formato de telefone inválido'),
   occupation: z.string().min(2, 'Ocupação deve ter pelo menos 2 caracteres'),
 });
 
@@ -17,15 +19,41 @@ type FormData = z.infer<typeof formSchema>;
 
 export default function RegistrationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [phoneValue, setPhoneValue] = useState('');
   const router = useRouter();
   
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
+
+  // Função para formatar o telefone
+  const formatPhone = (value: string) => {
+    // Remove todos os caracteres não numéricos
+    const numbers = value.replace(/\D/g, '');
+    
+    // Aplica a máscara baseada no tamanho
+    if (numbers.length <= 2) {
+      return numbers;
+    } else if (numbers.length <= 6) {
+      return `(${numbers.slice(0, 2)}) ${numbers.slice(2)}`;
+    } else if (numbers.length <= 10) {
+      return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 6)}-${numbers.slice(6)}`;
+    } else {
+      return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(7, 11)}`;
+    }
+  };
+
+  // Função para lidar com mudanças no telefone
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhone(e.target.value);
+    setPhoneValue(formatted);
+    setValue('phone', formatted);
+  };
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
@@ -105,8 +133,11 @@ export default function RegistrationForm() {
             {...register('phone')}
             type="tel"
             id="phone"
+            value={phoneValue}
+            onChange={handlePhoneChange}
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-orange focus:border-transparent outline-none transition-all"
             placeholder="(11) 99999-9999"
+            maxLength={15}
           />
           {errors.phone && (
             <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
