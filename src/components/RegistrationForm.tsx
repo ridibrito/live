@@ -31,18 +31,22 @@ export default function RegistrationForm() {
     setIsSubmitting(true);
     
     try {
-      // Simular delay de processamento
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      console.log('Formulário enviado com sucesso:', data);
-      console.log('📝 Dados que serão processados pelo Mautic:', {
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
-        occupation: data.occupation,
-        source: 'live-aldeia-singular',
-        tags: ['live-aldeia', 'formulario-inscricao', 'inscrito-para-live']
+      // Enviar dados para a API route que processará o webhook
+      const response = await fetch('/api/webhook-n8n', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
       });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Erro ao processar inscrição');
+      }
+
+      console.log('Formulário enviado com sucesso:', result);
       
       // Redirecionar para página de agradecimento
       router.push('/obrigado');
