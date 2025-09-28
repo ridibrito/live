@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     // Enviar dados para o webhook do N8N
     // Verificar se há uma URL personalizada via variável de ambiente
     const customWebhookUrl = process.env.N8N_WEBHOOK_URL;
-    // URL do webhook em produção (funcionando)
+    // URL do webhook em produção (workflow ativo)
     const webhookUrl = customWebhookUrl || 'https://editor.coruss.com.br/webhook/live_aldeia_v2';
     
     try {
