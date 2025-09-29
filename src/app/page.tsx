@@ -334,7 +334,7 @@ export default function Home() {
                       </p>
                       
                       <p className="text-base lg:text-lg leading-relaxed">
-                      Essa fascinação pela "faísca" única em cada criança a levou a uma busca que uniu o acadêmico e o afetivo. Por 30 anos, foi professora e mentora na Universidade de Brasília (UnB) e atravessou o mundo para obter seu PhD em Psicologia pela Universidade de Connecticut, onde se especializou diretamente com o maior nome da área, o Dr. Joseph Renzulli.
+                      Essa fascinação pela &quot;faísca&quot; única em cada criança a levou a uma busca que uniu o acadêmico e o afetivo. Por 30 anos, foi professora e mentora na Universidade de Brasília (UnB) e atravessou o mundo para obter seu PhD em Psicologia pela Universidade de Connecticut, onde se especializou diretamente com o maior nome da área, o Dr. Joseph Renzulli.
                       </p>
                       
                       <p className="text-base lg:text-lg leading-relaxed">
