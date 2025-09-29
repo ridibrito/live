@@ -293,7 +293,7 @@ export default function Home() {
       <Section backgroundColor="gray">
         <div className="text-center space-y-12">
           <h2 className="text-3xl lg:text-4xl font-bold text-primary-dark">
-            Quem te guia nessa jornada
+            Quem te guiará nessa jornada
           </h2>
           
           <div className="max-w-6xl mx-auto">
