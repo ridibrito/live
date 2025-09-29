@@ -94,10 +94,10 @@ export default function Home() {
             <div className="text-white space-y-8">
               <div className="space-y-6">
                 <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight">
-                  A jornada de criar um filho com altas habilidades pode e deve ser mais leve. <span className="text-[#F5AF21] underline decoration-[#F5AF21] decoration-2 underline-offset-4">Chegou a hora de cuidar de quem cuida.</span>
+                  A jornada de criar um filho com Altas Habilidades pode e deve ser mais leve. <span className="text-[#F5AF21] underline decoration-[#F5AF21] decoration-2 underline-offset-4">Chegou a hora de cuidar de quem cuida.</span>
                 </h1>
                 <p className="text-lg lg:text-xl text-white/90 leading-relaxed">
-                Encontro online e gratuito pensado para descobrir caminhos para fortalecer seu filho e se fortalecer como mães e pais de filhos com altas habilidades e superdotação.                </p>
+                Encontro online e gratuito pensado para descobrir caminhos para fortalecer seu filho e se fortalecer como mães e pais de filhos com Altas Habilidades e Superdotação .                </p>
               </div>
               
               {/* Destaque do Evento */}
@@ -144,7 +144,7 @@ export default function Home() {
                 <QuestionMarkCircleIcon className="w-5 h-5 text-white" />
               </div>
               <p className="text-base lg:text-lg text-gray-700 text-left">
-                sentem-se perdidos, tentando entender se os comportamentos intensos e a curiosidade insaciável do seu filho são, de fato, sinais de altas habilidades.
+                Sentem-se perdidos, tentando entender se os comportamentos intensos e a curiosidade insaciável do seu filho são, de fato, sinais de Altas Habilidades.
               </p>
             </div>
 
@@ -153,7 +153,7 @@ export default function Home() {
                 <HeartIcon className="w-5 h-5 text-white" />
               </div>
               <p className="text-base lg:text-lg text-gray-700 text-left">
-                percebem a falta de apoio da escola e até da família, ouvindo que é &quot;apenas uma fase&quot; ou &quot;coisa de criança inteligente&quot;.
+                Percebem a falta de apoio da escola e até da família, ouvindo que é &quot;apenas uma fase&quot; ou &quot;coisa de criança inteligente&quot;.
               </p>
             </div>
 
@@ -162,7 +162,7 @@ export default function Home() {
                 <LightBulbIcon className="w-5 h-5 text-white" />
               </div>
               <p className="text-base lg:text-lg text-gray-700 text-left">
-                buscam conhecimento confiável, mas se deparam com um oceano de informações confusas e mitos que mais atrapalham do que ajudam.
+                Buscam conhecimento confiável, mas se deparam com um oceano de informações confusas e mitos que mais atrapalham do que ajudam.
               </p>
             </div>
 
@@ -171,7 +171,7 @@ export default function Home() {
                 <DocumentTextIcon className="w-5 h-5 text-white" />
               </div>
               <p className="text-base lg:text-lg text-gray-700 text-left">
-                se perguntam, no silêncio do fim do dia, se estão fazendo o suficiente e como podem verdadeiramente ajudar seu filho a florescer sem se sentirem esgotados.
+                Se perguntam, no silêncio do fim do dia, se estão fazendo o suficiente e como podem verdadeiramente ajudar seu filho a florescer sem se sentirem esgotados.
               </p>
             </div>
 
@@ -180,7 +180,7 @@ export default function Home() {
                 <UserGroupIcon className="w-5 h-5 text-white" />
               </div>
               <p className="text-base lg:text-lg text-gray-700 text-left">
-                anseiam por conversar com outros pais que entendem exatamente o que vocês estão sentindo, sem julgamentos ou conselhos vazios.
+                Anseiam por conversar com outros pais que entendem exatamente o que vocês estão sentindo, sem julgamentos ou conselhos vazios.
               </p>
             </div>
           </div>
@@ -215,7 +215,7 @@ export default function Home() {
                 <div>
                   <h3 className="text-xl font-bold text-white mb-3">Clareza para o Caminho</h3>
                   <p className="text-white/90">
-                    Como identificar os sinais das altas habilidades com segurança e acolher essa descoberta em família, transformando dúvida em confiança.
+                    Como identificar os sinais das Altas Habilidades com segurança e acolher essa descoberta em família, transformando dúvida em confiança.
                   </p>
                 </div>
               </div>
@@ -243,7 +243,7 @@ export default function Home() {
                 <div>
                   <h3 className="text-xl font-bold text-white mb-3">Conhecimento que Liberta</h3>
                   <p className="text-white/90">
-                    Vamos desmistificar os maiores mitos sobre a superdotação e focar no que a ciência e a prática nos ensinam sobre o bem-estar emocional e intelectual dessas crianças.
+                    Vamos desmistificar os maiores mitos sobre a Superdotação  e focar no que a ciência e a prática nos ensinam sobre o bem-estar emocional e intelectual dessas crianças.
                   </p>
                 </div>
               </div>
@@ -330,16 +330,15 @@ export default function Home() {
                     {/* Biografia */}
                     <div className="space-y-4 text-gray-700">
                       <p className="text-base lg:text-lg leading-relaxed">
-                        A jornada de Angela Virgolim começa no mesmo lugar que a sua: no amor que observa, no cuidado que busca respostas. Antes de ser autora e uma referência nacional e mundial no tema de altas habilidades e superdotação, ela é mineira de Araxá, esposa, mãe e avó de altas habilidades.
+                        A jornada de Angela Virgolim começa no mesmo lugar que a sua: no amor que observa, no cuidado que busca respostas. Antes de ser autora e uma referência nacional e mundial no tema de Altas Habilidades e Superdotação , ela é mineira de Araxá, esposa, mãe e avó de Altas Habilidades.
                       </p>
                       
                       <p className="text-base lg:text-lg leading-relaxed">
-                        Essa fascinação pela &quot;faísca&quot; única em cada criança a levou a uma busca que uniu o acadêmico e o afetuoso. Por 30 anos, foi professora e mentora na Universidade de Brasília (UnB) e atravessou o mundo para obter seu PhD em Psicologia pela Universidade de Connecticut, onde se especializou diretamente com o maior nome da área, o Dr. Joseph Renzulli.
+                      Essa fascinação pela "faísca" única em cada criança a levou a uma busca que uniu o acadêmico e o afetivo. Por 30 anos, foi professora e mentora na Universidade de Brasília (UnB) e atravessou o mundo para obter seu PhD em Psicologia pela Universidade de Connecticut, onde se especializou diretamente com o maior nome da área, o Dr. Joseph Renzulli.
                       </p>
                       
                       <p className="text-base lg:text-lg leading-relaxed">
-                        Foi nesse percurso, especialmente nos programas que fundou dentro da UnB para acolher centenas de famílias, que Ângela percebeu algo fundamental: o conhecimento técnico, por si só, não bastava. A maior angústia das mães e dos pais era a solidão e a incerteza.
-                      </p>
+                      Foi nesse percurso, trabalhando com preparação e capacitação de professores na UnB, que mais tarde teve enfoque para os pais, e na sua jornada com o Instituto Virgolim, com um contato mais direto com as famílias, Angela percebeu algo fundamental: o conhecimento técnico, por si só, não bastava. A maior angústia das mães e dos pais era a solidão e a incerteza.                      </p>
                     </div>
                     
                     {/* Credenciais */}
@@ -365,7 +364,7 @@ export default function Home() {
                     {/* Missão final */}
                     <div className="bg-gray-50 p-6 rounded-2xl border-l-4 border-accent-orange">
                       <p className="text-base lg:text-lg text-gray-700 leading-relaxed font-medium">
-                        Mesmo após presidir o Conselho Brasileiro para Superdotação (ConBraSD), ela fundou o Instituto Virgolim: um espaço de acolhimento pensado para transformar décadas de ciência em um apoio real para a sua jornada, garantindo que você não precise mais caminhar só.
+                        Mesmo após presidir o Conselho Brasileiro para Superdotação  (ConBraSD), ela fundou o Instituto Virgolim: um espaço de acolhimento pensado para transformar décadas de ciência em um apoio real para a sua jornada, garantindo que você não precise mais caminhar só.
                       </p>
                     </div>
                   </div>
