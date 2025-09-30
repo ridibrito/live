@@ -96,13 +96,16 @@ export async function POST(request: NextRequest) {
           lastError = { status: webhookResponse.status, response: responseText, url: webhookUrl };
         }
       } catch (webhookError) {
+        const errorMessage = webhookError instanceof Error ? webhookError.message : String(webhookError);
+        const errorStack = webhookError instanceof Error ? webhookError.stack : undefined;
+        
         console.error('❌ Erro de conexão com webhook N8N:', {
-          error: webhookError.message,
-          stack: webhookError.stack,
+          error: errorMessage,
+          stack: errorStack,
           url: webhookUrl,
           timestamp: new Date().toISOString()
         });
-        lastError = { error: webhookError.message, url: webhookUrl };
+        lastError = { error: errorMessage, url: webhookUrl };
       }
     }
 
