@@ -34,7 +34,14 @@ export async function POST(request: NextRequest) {
       tags: ['live-aldeia', 'formulario-inscricao', 'inscrito-para-live'],
       timestamp: new Date().toISOString(),
       userAgent: request.headers.get('user-agent') || '',
-      ip: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
+      ip: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown',
+      // Incluir UTMs se enviados
+      utms: body.utms || {},
+      utm_source: body.utms?.utm_source || '',
+      utm_medium: body.utms?.utm_medium || '',
+      utm_campaign: body.utms?.utm_campaign || '',
+      utm_term: body.utms?.utm_term || '',
+      utm_content: body.utms?.utm_content || '',
     };
 
     // Enviar dados para o webhook do N8N

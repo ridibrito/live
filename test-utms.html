@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de UTMs - Live Aldeia Singular</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            color: #FF6B00;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .test-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .test-link {
+            display: block;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #FF6B00 0%, #F5AF21 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .test-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 0, 0.4);
+        }
+        
+        .test-link-label {
+            font-size: 14px;
+            opacity: 0.9;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .test-link-url {
+            font-size: 12px;
+            opacity: 0.8;
+            font-family: monospace;
+            word-break: break-all;
+            margin-top: 5px;
+        }
+        
+        .info-box {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #FF6B00;
+        }
+        
+        .info-box h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .info-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .info-box li {
+            padding: 5px 0;
+            color: #666;
+        }
+        
+        .info-box code {
+            background: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #FF6B00;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Teste de Captura de UTMs</h1>
+        <p class="subtitle">Live Aldeia Singular - Sistema de Rastreamento</p>
+        
+        <div class="section">
+            <h2>Links de Teste com UTMs <span class="badge">ATIVOS</span></h2>
+            <div class="test-links">
+                <a href="http://localhost:3000/?utm_source=facebook&utm_medium=social&utm_campaign=live_aldeia_2024&utm_content=post_organico&utm_term=cuidador_idosos" class="test-link">
+                    <span class="test-link-label">🔵 Teste 1: Facebook Orgânico</span>
+                    <span class="test-link-url">utm_source=facebook | utm_medium=social | utm_campaign=live_aldeia_2024</span>
+                </a>
+                
+                <a href="http://localhost:3000/?utm_source=instagram&utm_medium=paid&utm_campaign=live_aldeia_2024&utm_content=stories_anuncio&utm_term=cuidador_profissional" class="test-link">
+                    <span class="test-link-label">📸 Teste 2: Instagram Pago (Stories)</span>
+                    <span class="test-link-url">utm_source=instagram | utm_medium=paid | utm_campaign=live_aldeia_2024</span>
+                </a>
+                
+                <a href="http://localhost:3000/?utm_source=google&utm_medium=cpc&utm_campaign=live_aldeia_2024&utm_content=anuncio_search&utm_term=aldeia_singular" class="test-link">
+                    <span class="test-link-label">🔍 Teste 3: Google Ads (CPC)</span>
+                    <span class="test-link-url">utm_source=google | utm_medium=cpc | utm_campaign=live_aldeia_2024</span>
+                </a>
+                
+                <a href="http://localhost:3000/?utm_source=email&utm_medium=newsletter&utm_campaign=live_aldeia_2024&utm_content=convite_especial" class="test-link">
+                    <span class="test-link-label">📧 Teste 4: Email Marketing</span>
+                    <span class="test-link-url">utm_source=email | utm_medium=newsletter | utm_campaign=live_aldeia_2024</span>
+                </a>
+                
+                <a href="http://localhost:3000/?utm_source=whatsapp&utm_medium=referral&utm_campaign=live_aldeia_2024&utm_content=compartilhamento_direto" class="test-link">
+                    <span class="test-link-label">💚 Teste 5: WhatsApp (Compartilhamento)</span>
+                    <span class="test-link-url">utm_source=whatsapp | utm_medium=referral | utm_campaign=live_aldeia_2024</span>
+                </a>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="info-box">
+                <h3>ℹ️ Como Testar:</h3>
+                <ul>
+                    <li>1. Clique em qualquer link de teste acima</li>
+                    <li>2. Abra o <strong>Console do navegador</strong> (F12 → Console)</li>
+                    <li>3. Você verá os UTMs capturados: <code>📊 UTMs capturados</code></li>
+                    <li>4. Preencha e envie o formulário</li>
+                    <li>5. Verifique os dados no webhook do N8N</li>
+                    <li>6. Os UTMs são persistidos no localStorage</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="info-box">
+                <h3>📊 UTMs Capturados:</h3>
+                <ul>
+                    <li><code>utm_source</code> - Origem do tráfego (ex: facebook, google, instagram)</li>
+                    <li><code>utm_medium</code> - Tipo de mídia (ex: social, paid, cpc, email)</li>
+                    <li><code>utm_campaign</code> - Nome da campanha (ex: live_aldeia_2024)</li>
+                    <li><code>utm_content</code> - Conteúdo específico (ex: post_organico, stories)</li>
+                    <li><code>utm_term</code> - Termo/palavra-chave (ex: cuidador_idosos)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

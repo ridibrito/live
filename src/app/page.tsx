@@ -1,6 +1,6 @@
 'use client';
 
-import RegistrationForm from '@/components/RegistrationForm';
+import RegistrationFormWrapper from '@/components/RegistrationFormWrapper';
 import Section from '@/components/Section';
 import Image from 'next/image';
 import { useEffect } from 'react';
@@ -125,7 +125,7 @@ export default function Home() {
             
             {/* Formulário de Inscrição */}
             <div className="flex justify-center lg:justify-end">
-              <RegistrationForm />
+              <RegistrationFormWrapper />
             </div>
           </div>
         </div>

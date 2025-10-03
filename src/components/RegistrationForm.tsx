@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const formSchema = z.object({
   name: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres'),
@@ -20,7 +20,9 @@ type FormData = z.infer<typeof formSchema>;
 export default function RegistrationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [phoneValue, setPhoneValue] = useState('');
+  const [utmParams, setUtmParams] = useState<Record<string, string>>({});
   const router = useRouter();
+  const searchParams = useSearchParams();
   
   const {
     register,
@@ -30,6 +32,39 @@ export default function RegistrationForm() {
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
+
+  // Capturar UTMs da URL quando o componente montar
+  useEffect(() => {
+    const utms: Record<string, string> = {};
+    const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+    
+    utmKeys.forEach(key => {
+      const value = searchParams.get(key);
+      if (value) {
+        utms[key] = value;
+      }
+    });
+
+    if (Object.keys(utms).length > 0) {
+      console.log('📊 UTMs capturados:', utms);
+      setUtmParams(utms);
+      
+      // Salvar UTMs no localStorage para persistência
+      localStorage.setItem('utmParams', JSON.stringify(utms));
+    } else {
+      // Tentar recuperar UTMs do localStorage se não houver na URL
+      const savedUtms = localStorage.getItem('utmParams');
+      if (savedUtms) {
+        try {
+          const parsed = JSON.parse(savedUtms);
+          console.log('📊 UTMs recuperados do localStorage:', parsed);
+          setUtmParams(parsed);
+        } catch (e) {
+          console.error('Erro ao recuperar UTMs do localStorage:', e);
+        }
+      }
+    }
+  }, [searchParams]);
 
   // Função para formatar o telefone
   const formatPhone = (value: string) => {
@@ -62,14 +97,21 @@ export default function RegistrationForm() {
       // Enviar dados para a API route que processará o webhook
       // Usar URL absoluta para funcionar em produção
       const apiUrl = `${window.location.origin}/api/webhook-n8n`;
-      console.log('🔄 Enviando dados para API:', apiUrl, data);
+      
+      // Incluir UTMs nos dados
+      const dataWithUtms = {
+        ...data,
+        utms: utmParams,
+      };
+      
+      console.log('🔄 Enviando dados para API:', apiUrl, dataWithUtms);
       
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(dataWithUtms),
       });
 
       const result = await response.json();
