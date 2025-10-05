@@ -1,19 +1,26 @@
-'use client'
-import { useEffect } from 'react'
-import ProgressBar from '@/components/ProgressBar'
-import { CheckCircleIcon } from '@heroicons/react/24/outline'
-import Image from 'next/image'
+'use client';
+
+import { useEffect } from 'react';
+import ProgressBar from '@/components/ProgressBar';
+import { CheckCircleIcon } from '@heroicons/react/24/outline';
+import Image from 'next/image';
+
+// Tipagem segura do dataLayer (sem "any")
+declare global {
+  interface Window {
+    dataLayer?: Array<Record<string, unknown>>;
+  }
+}
 
 export default function ObrigadoPage() {
   // Dispara o evento de LEAD assim que a página /obrigado renderiza
   useEffect(() => {
-    const w = window as unknown as { dataLayer?: Array<Record<string, any>> }
-    w.dataLayer = w.dataLayer || []
-    w.dataLayer.push({
+    window.dataLayer = window.dataLayer ?? [];
+    window.dataLayer.push({
       event: 'lead_confirmed',
       page_path: '/obrigado',
-    })
-  }, [])
+    });
+  }, []);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-primary-dark via-primary-purple to-primary-dark flex items-center justify-center px-6 py-20">
@@ -34,9 +41,7 @@ export default function ObrigadoPage() {
         {/* Título Principal */}
         <div className="space-y-4">
           <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight">
-            Sua inscrição está{' '}
-            <span className="text-accent-yellow">confirmada</span>, mas ainda
-            falta um passo!
+            Sua inscrição está <span className="text-accent-yellow">confirmada</span>, mas ainda falta um passo!
           </h1>
         </div>
 
@@ -47,8 +52,7 @@ export default function ObrigadoPage() {
 
         {/* Subtítulo */}
         <p className="text-xl md:text-2xl text-white/90 leading-relaxed">
-          Clique no link abaixo e entre no grupo do WhatsApp para você ficar por
-          dentro de todas as informações e aquecimento para nosso encontro.
+          Clique no link abaixo e entre no grupo do WhatsApp para você ficar por dentro de todas as informações e aquecimento para nosso encontro.
         </p>
 
         {/* Botão CTA Principal */}
@@ -61,22 +65,16 @@ export default function ObrigadoPage() {
           >
             NÃO QUERO PERDER NADA
           </a>
-          <p className="text-white/80 text-sm">
-            ⚡ Acesso imediato ao grupo exclusivo
-          </p>
+          <p className="text-white/80 text-sm">⚡ Acesso imediato ao grupo exclusivo</p>
         </div>
 
         {/* Informações Adicionais */}
         <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 mt-12">
-          <h3 className="text-xl font-semibold text-white mb-4">
-            O que você vai receber no grupo:
-          </h3>
+          <h3 className="text-xl font-semibold text-white mb-4">O que você vai receber no grupo:</h3>
           <div className="grid md:grid-cols-2 gap-4 text-left">
             <div className="flex items-start space-x-3">
               <CheckCircleIcon className="w-5 h-5 text-accent-orange mt-0.5 flex-shrink-0" />
-              <span className="text-white">
-                Materiais preparatórios exclusivos
-              </span>
+              <span className="text-white">Materiais preparatórios exclusivos</span>
             </div>
             <div className="flex items-start space-x-3">
               <CheckCircleIcon className="w-5 h-5 text-accent-orange mt-0.5 flex-shrink-0" />
@@ -112,5 +110,5 @@ export default function ObrigadoPage() {
         </div>
       </div>
     </main>
-  )
+  );
 }
