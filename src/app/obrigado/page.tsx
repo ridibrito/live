@@ -1,8 +1,22 @@
-import ProgressBar from '@/components/ProgressBar';
-import { CheckCircleIcon } from '@heroicons/react/24/outline';
-import Image from 'next/image';
+'use client'
+import { useEffect } from 'react'
+import ProgressBar from '@/components/ProgressBar'
+import { CheckCircleIcon } from '@heroicons/react/24/outline'
+import Image from 'next/image'
 
 export default function ObrigadoPage() {
+  // Dispara o evento de LEAD assim que a página /obrigado renderiza
+  useEffect(() => {
+    // garante que o array exista
+    // @ts-ignore
+    window.dataLayer = window.dataLayer || []
+    // @ts-ignore
+    window.dataLayer.push({
+      event: 'lead_confirmed',
+      page_path: '/obrigado',
+    })
+  }, [])
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-primary-dark via-primary-purple to-primary-dark flex items-center justify-center px-6 py-20">
       <div className="max-w-2xl w-full text-center space-y-8">
@@ -14,7 +28,7 @@ export default function ObrigadoPage() {
             width={300}
             height={100}
             className="object-contain"
-            style={{ height: "auto" }}
+            style={{ height: 'auto' }}
             priority
           />
         </div>
@@ -46,10 +60,7 @@ export default function ObrigadoPage() {
           >
             NÃO QUERO PERDER NADA
           </a>
-          
-          <p className="text-white/80 text-sm">
-            ⚡ Acesso imediato ao grupo exclusivo
-          </p>
+          <p className="text-white/80 text-sm">⚡ Acesso imediato ao grupo exclusivo</p>
         </div>
 
         {/* Informações Adicionais */}
@@ -77,12 +88,9 @@ export default function ObrigadoPage() {
 
         {/* Rodapé */}
         <div className="pt-8 space-y-4">
-          <p className="text-white/60 text-sm">
-            Se tiver qualquer dúvida, entre em contato conosco pelo WhatsApp
-          </p>
-          
+          <p className="text-white/60 text-sm">Se tiver qualquer dúvida, entre em contato conosco pelo WhatsApp</p>
           <a
-            href="https://wa.me/5511999999999"
+            href="https://wa.me/5561999093760"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center space-x-3 bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg"
@@ -95,5 +103,5 @@ export default function ObrigadoPage() {
         </div>
       </div>
     </main>
-  );
+  )
 }
