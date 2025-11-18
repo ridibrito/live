@@ -94,10 +94,11 @@ export default function Home() {
             <div className="text-white space-y-8">
               <div className="space-y-6">
                 <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight">
-                  A jornada de criar um filho com Altas Habilidades pode e deve ser mais leve. <span className="text-[#F5AF21] underline decoration-[#F5AF21] decoration-2 underline-offset-4">Chegou a hora de cuidar de quem cuida.</span>
+                  Entre Singularidades: AHSD em Crianças com TEA e TDAH
                 </h1>
                 <p className="text-lg lg:text-xl text-white/90 leading-relaxed">
-                Encontro online e gratuito pensado para descobrir caminhos para fortalecer seu filho e se fortalecer como mães e pais de filhos com Altas Habilidades e Superdotação .                </p>
+                  Meu filho tem TDAH, TEA ou Altas Habilidades? Uma conversa acolhedora e esclarecedora para pais que se sentem perdidos no labirinto do diagnóstico e buscam a melhor forma de apoiar suas crianças singulares.
+                </p>
               </div>
               
               {/* Destaque do Evento */}
@@ -106,19 +107,19 @@ export default function Home() {
                   <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center">
                     <CalendarDaysIcon className="w-5 h-5 text-white" />
                   </div>
-                  <span className="text-base lg:text-lg"><span className="font-black">Quando?</span> Dia 09 de Outubro, quinta-feira.</span>
+                  <span className="text-base lg:text-lg"><span className="font-black">Quando?</span> 01 de Dezembro (Segunda-feira).</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center">
                     <ClockIcon className="w-5 h-5 text-white" />
                   </div>
-                  <span className="text-base lg:text-lg"><span className="font-black">Que horas?</span> Às 19h45 (horário de Brasília).</span>
+                  <span className="text-base lg:text-lg"><span className="font-black">Que horas?</span> 19h45 (Horário de Brasília).</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center">
                     <ComputerDesktopIcon className="w-5 h-5 text-white" />
                   </div>
-                  <span className="text-base lg:text-lg"><span className="font-black">Onde?</span> Online e Ao Vivo.</span>
+                  <span className="text-base lg:text-lg"><span className="font-black">Onde?</span> Ao vivo, no YouTube. O link exclusivo será enviado por e-mail e WhatsApp para os inscritos.</span>
                 </div>
               </div>
             </div>
@@ -131,79 +132,67 @@ export default function Home() {
         </div>
       </section>
 
-      {/* DOBRA 2: Conexão com a Dor (Empatia) */}
+      {/* DOBRA 2: A Dor (Conexão e Empatia) */}
       <Section backgroundColor="gray">
         <div className="text-center space-y-8">
           <h2 className="text-3xl lg:text-4xl font-bold text-primary-dark">
-            Mamãe e Papai, se vocês...
+            A Dor (Conexão e Empatia)
           </h2>
           
           <div className="max-w-4xl mx-auto space-y-6">
-            <div className="flex items-start space-x-4 p-6 bg-white rounded-xl shadow-md">
-              <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                <QuestionMarkCircleIcon className="w-5 h-5 text-white" />
-              </div>
-              <p className="text-base lg:text-lg text-gray-700 text-left">
-                Sentem-se perdidos, tentando entender se os comportamentos intensos e a curiosidade insaciável do seu filho são, de fato, sinais de Altas Habilidades.
+            <div className="p-6 bg-white rounded-xl shadow-md">
+              <p className="text-base lg:text-lg text-gray-700 text-left leading-relaxed">
+                &quot;Ele é tão inteligente, mas não para quieto.&quot; &quot;Ele tem uma memória incrível para temas específicos, mas não consegue fazer amigos.&quot; &quot;A escola me chamou de novo. Disseram que ele pode ter TDAH, mas eu sinto que é mais do que isso.&quot;
               </p>
             </div>
 
-            <div className="flex items-start space-x-4 p-6 bg-white rounded-xl shadow-md">
-              <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                <HeartIcon className="w-5 h-5 text-white" />
-              </div>
-              <p className="text-base lg:text-lg text-gray-700 text-left">
-                Percebem a falta de apoio da escola e até da família, ouvindo que é &quot;apenas uma fase&quot; ou &quot;coisa de criança inteligente&quot;.
+            <div className="p-6 bg-white rounded-xl shadow-md">
+              <p className="text-base lg:text-lg text-gray-700 text-left leading-relaxed">
+                Se essas frases ressoam com você, você entende a angústia que é tentar decifrar uma criança que parece viver em vários mundos ao mesmo tempo.
               </p>
             </div>
 
-            <div className="flex items-start space-x-4 p-6 bg-white rounded-xl shadow-md">
-              <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                <LightBulbIcon className="w-5 h-5 text-white" />
-              </div>
-              <p className="text-base lg:text-lg text-gray-700 text-left">
-                Buscam conhecimento confiável, mas se deparam com um oceano de informações confusas e mitos que mais atrapalham do que ajudam.
+            <div className="p-6 bg-white rounded-xl shadow-md">
+              <p className="text-base lg:text-lg text-gray-700 text-left leading-relaxed">
+                A intensidade, a sensibilidade, a dificuldade social, a inquietação... Onde termina a Alta Habilidade e começa o TDAH? Como a rigidez do TEA se parece (ou não) com o hiperfoco da Superdotação?
               </p>
             </div>
 
-            <div className="flex items-start space-x-4 p-6 bg-white rounded-xl shadow-md">
-              <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                <DocumentTextIcon className="w-5 h-5 text-white" />
-              </div>
-              <p className="text-base lg:text-lg text-gray-700 text-left">
-                Se perguntam, no silêncio do fim do dia, se estão fazendo o suficiente e como podem verdadeiramente ajudar seu filho a florescer sem se sentirem esgotados.
+            <div className="p-6 bg-white rounded-xl shadow-md">
+              <p className="text-base lg:text-lg text-gray-700 text-left leading-relaxed">
+                A verdade é que, muitas vezes, esses caminhos se cruzam. A &quot;Dupla Condição&quot; (ou Dupla Excepcionalidade) é real, mas é complexa, pouco discutida e, frequentemente, leva a diagnósticos confusos ou incompletos. Isso gera ansiedade para os pais e frustração para a criança, que não se sente compreendida em sua totalidade.
               </p>
             </div>
 
-            <div className="flex items-start space-x-4 p-6 bg-white rounded-xl shadow-md">
-              <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                <UserGroupIcon className="w-5 h-5 text-white" />
-              </div>
-              <p className="text-base lg:text-lg text-gray-700 text-left">
-                Anseiam por conversar com outros pais que entendem exatamente o que vocês estão sentindo, sem julgamentos ou conselhos vazios.
+            <div className="p-6 bg-white rounded-xl shadow-md border-l-4 border-accent-orange">
+              <p className="text-base lg:text-lg text-gray-700 text-left leading-relaxed font-medium">
+                Viemos trazer luz, ciência e acolhimento para essa jornada.
               </p>
             </div>
           </div>
 
           <div className="mt-12 text-center">
-            <p className="text-2xl lg:text-3xl font-bold text-accent-orange mb-8">
-              ... então este encontro foi desenhado para vocês.
+            <p className="text-xl lg:text-2xl font-bold text-primary-dark mb-4">
+              Convidamos você para a Roda de Conversa Entre Singularidades: AHSD em Crianças com TEA e TDAH
+            </p>
+            <p className="text-lg lg:text-xl text-gray-700 mb-8">
+              Junte-se à Dra. Angela Virgolim e ao nosso convidado especial, Dr. Tiago Figueiredo, em um encontro ao vivo, gratuito e online. Vamos mergulhar fundo nas múltiplas formas de expressão do potencial e nos desafios do diagnóstico.
             </p>
             <a 
               href="#form" 
               className="inline-block bg-gradient-to-r from-accent-orange to-accent-yellow text-white font-bold py-4 px-8 rounded-xl text-lg hover:from-orange-600 hover:to-yellow-500 transform hover:scale-105 transition-all duration-200 shadow-lg border-2 border-white"
             >
-              QUERO PARTICIPAR DA LIVE
+              Quero garantir meu lugar nesta conversa
             </a>
           </div>
         </div>
       </Section>
 
-      {/* DOBRA 3: Apresentação da Solução (O Conteúdo) */}
+      {/* DOBRA 3: O que você vai descobrir nesta Roda de Conversa */}
       <Section backgroundColor="purple">
         <div className="text-center space-y-8">
           <h2 className="text-3xl lg:text-4xl font-bold text-white">
-            Do que conversaremos no nosso encontro?
+            O que você vai descobrir nesta Roda de Conversa:
           </h2>
           
           <div className="max-w-5xl mx-auto space-y-8">
@@ -213,9 +202,9 @@ export default function Home() {
                   <CheckCircleIcon className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-white mb-3">Clareza para o Caminho</h3>
+                  <h3 className="text-xl font-bold text-white mb-3">Altas Habilidades são uma Neurodivergência?</h3>
                   <p className="text-white/90">
-                    Como identificar os sinais das Altas Habilidades com segurança e acolher essa descoberta em família, transformando dúvida em confiança.
+                    Qual a visão da medicina e da psiquiatria sobre as AHSD e qual a melhor maneira de avaliá-las hoje.
                   </p>
                 </div>
               </div>
@@ -227,9 +216,9 @@ export default function Home() {
                   <LinkIcon className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-white mb-3">Construindo Pontes</h3>
+                  <h3 className="text-xl font-bold text-white mb-3">O que é a &quot;Dupla Condição&quot;?</h3>
                   <p className="text-white/90">
-                    Estratégias para criar uma rede de apoio eficaz, dialogando com a escola e envolvendo a família na jornada de desenvolvimento do seu filho.
+                    Entenda como as Altas Habilidades coexistem com o TDAH e o TEA e os segredos para um diagnóstico diferencial correto.
                   </p>
                 </div>
               </div>
@@ -241,9 +230,9 @@ export default function Home() {
                   <BookOpenIcon className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-white mb-3">Conhecimento que Liberta</h3>
+                  <h3 className="text-xl font-bold text-white mb-3">Diagnóstico na Primeira Consulta: É possível?</h3>
                   <p className="text-white/90">
-                    Vamos desmistificar os maiores mitos sobre a Superdotação  e focar no que a ciência e a prática nos ensinam sobre o bem-estar emocional e intelectual dessas crianças.
+                    O que um profissional experiente precisa observar na sessão inicial para guiar os pais após a consulta, evitando rótulos apressados.
                   </p>
                 </div>
               </div>
@@ -255,23 +244,9 @@ export default function Home() {
                   <HeartIcon className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-white mb-3">Ferramentas para o Coração</h3>
+                  <h3 className="text-xl font-bold text-white mb-3">Dificuldade Social: TDAH vs. TEA</h3>
                   <p className="text-white/90">
-                    Como lidar com a intensidade emocional, a sensibilidade e os desafios do dia a dia de forma afetuosa e prática, cuidando da saúde mental de todos.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-xl text-left">
-              <div className="flex items-start space-x-4">
-                <div className="w-12 h-12 bg-accent-orange rounded-full flex items-center justify-center flex-shrink-0">
-                  <UserGroupIcon className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-white mb-3">O Poder do &quot;Nós&quot;</h3>
-                  <p className="text-white/90">
-                    A importância vital de se conectar. Falaremos sobre como encontrar e nutrir uma comunidade de apoio que entende, acolhe e fortalece.
+                    &quot;Meu filho tem dificuldade com amigos&quot;. Entenda a diferença crucial do déficit de Cognição Social no TDAH e como ele se distingue do que ocorre no TEA.
                   </p>
                 </div>
               </div>
@@ -283,19 +258,23 @@ export default function Home() {
               href="#form" 
               className="inline-block bg-gradient-to-r from-accent-orange to-accent-yellow text-white font-bold py-4 px-8 rounded-xl text-lg hover:from-orange-600 hover:to-yellow-500 transform hover:scale-105 transition-all duration-200 shadow-lg border-2 border-white"
             >
-              QUERO PARTICIPAR DA LIVE
+              Quero garantir meu lugar nesta conversa
             </a>
+            <p className="text-white/80 text-sm mt-4">
+              Ao se inscrever, você concorda em receber comunicações sobre este e outros eventos da Aldeia Singular.
+            </p>
           </div>
         </div>
       </Section>
 
-      {/* DOBRA 4: Quem Guia a Jornada (Autoridade e Conexão) */}
+      {/* DOBRA 4: Nossos Especialistas (Autoridade) */}
       <Section backgroundColor="gray">
         <div className="text-center space-y-12">
           <h2 className="text-3xl lg:text-4xl font-bold text-primary-dark">
-            Quem te guiará nessa jornada
+            Nossos Especialistas
           </h2>
           
+          {/* Dra. Angela Virgolim */}
           <div className="max-w-6xl mx-auto">
             <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
               <div className="grid lg:grid-cols-2 gap-0">
@@ -372,6 +351,44 @@ export default function Home() {
               </div>
             </div>
           </div>
+
+          {/* Dr. Tiago Figueiredo */}
+          <div className="max-w-6xl mx-auto mt-12">
+            <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
+              <div className="grid lg:grid-cols-2 gap-0">
+                {/* Lado esquerdo - Texto */}
+                <div className="p-8 lg:p-12 flex flex-col justify-center order-2 lg:order-1">
+                  <div className="space-y-6">
+                    <div className="space-y-4 text-gray-700">
+                      <h3 className="text-2xl lg:text-3xl font-bold text-primary-dark mb-2">
+                        Dr. Tiago Figueiredo, MD, Ph.D.
+                      </h3>
+                      <p className="text-lg font-semibold text-accent-orange">
+                        Convidado Especial
+                      </p>
+                      <p className="text-base lg:text-lg leading-relaxed">
+                        Médico Psiquiatra, com especialização em Psiquiatria da Infância e Adolescência. Sua jornada acadêmica é profundamente ligada aos temas do nosso encontro: possui Mestrado e Doutorado com pesquisas focadas no TDAH e um Pós-Doutorado em Psicopatologia da Infância e Adolescência e Neurociências pela UFMG.
+                      </p>
+                      
+                      <p className="text-base lg:text-lg leading-relaxed">
+                        Fundador da Clínica Cognus, é autor do livro &quot;Cognição Social&quot; e trata diariamente de condições como TDAH e Transtorno do Espectro Autista. Dr. Tiago é uma referência no entendimento das complexas intersecções do neurodesenvolvimento, unindo a prática clínica a um profundo conhecimento científico para guiar famílias com diagnósticos precisos e planos de cuidado humanizados.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Lado direito - Placeholder para foto */}
+                <div className="relative bg-gradient-to-br from-primary-purple to-primary-dark p-8 lg:p-12 flex items-center justify-center order-1 lg:order-2">
+                  <div className="relative w-full h-full min-h-[300px] flex items-center justify-center">
+                    <div className="text-white text-center">
+                      <UserGroupIcon className="w-24 h-24 mx-auto mb-4 opacity-50" />
+                      <p className="text-sm opacity-75">Foto do Dr. Tiago Figueiredo</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           
           <div className="mt-12 text-center">
             <a 
@@ -384,16 +401,16 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* DOBRA 5: Chamada Final para Ação (Urgência e Reforço) */}
+      {/* DOBRA 5: Última Dobra - Chamada Final */}
       <Section backgroundColor="purple">
         <div className="text-center space-y-8">
           <h2 className="text-3xl lg:text-4xl font-bold text-white">
-            Sua jornada não precisa mais ser solitária.
+            A transformação que você busca para seu filho começa com o seu fortalecimento e conhecimento.
           </h2>
           
           <div className="max-w-3xl mx-auto">
             <p className="text-lg lg:text-xl text-white/90 leading-relaxed mb-12">
-              Este encontro é o nosso primeiro passo, juntos. Um convite para você respirar fundo, encontrar respostas e se conectar com quem entende a sua realidade. A transformação que você busca para seu filho começa com o seu fortalecimento.
+              Este encontro é o nosso primeiro passo, juntos. Um convite para você respirar fundo, encontrar respostas claras sobre AHSD, TDAH e TEA, e se conectar com quem entende a sua realidade.
             </p>
             
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8">
@@ -408,19 +425,19 @@ export default function Home() {
                     <div className="w-6 h-6 bg-accent-orange rounded-full flex items-center justify-center">
                       <CheckCircleIcon className="w-4 h-4 text-white" />
                     </div>
-                    <span className="text-white/90">Acesso imediato ao grupo do WhatsApp</span>
+                    <span className="text-white/90">Acesso imediato ao grupo do WhatsApp (para receber o link da live)</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="w-6 h-6 bg-accent-orange rounded-full flex items-center justify-center">
                       <CheckCircleIcon className="w-4 h-4 text-white" />
                     </div>
-                    <span className="text-white/90">Material exclusivo preparatório</span>
+                    <span className="text-white/90">Uma conversa com dois grandes especialistas no tema</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="w-6 h-6 bg-accent-orange rounded-full flex items-center justify-center">
                       <CheckCircleIcon className="w-4 h-4 text-white" />
                     </div>
-                    <span className="text-white/90">Comunidade de pais que te entendem</span>
+                    <span className="text-white/90">Um espaço seguro e acolhedor para suas dúvidas</span>
                   </div>
                 </div>
               </div>
@@ -437,6 +454,36 @@ export default function Home() {
           </div>
         </div>
       </Section>
+
+      {/* Footer */}
+      <footer className="bg-gray-50 py-12 px-6">
+        <div className="max-w-6xl mx-auto text-center space-y-6">
+          <div className="space-y-4">
+            <p className="text-lg font-semibold text-gray-700">Oferecimento:</p>
+            <div className="flex justify-center">
+              <Image
+                src="/horizontal.png"
+                alt="Logo Aldeia Singular"
+                width={250}
+                height={80}
+                className="object-contain"
+                style={{ height: "auto" }}
+              />
+            </div>
+            <p className="text-base text-gray-600 max-w-2xl mx-auto leading-relaxed">
+              Comunidade que acolhe e fortalece mães e pais de crianças e adolescentes com Altas Habilidades e Superdotação, identificados ou em processo de identificação.
+            </p>
+            <a 
+              href="https://aldeiasingular.com.br" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-gradient-to-r from-accent-orange to-accent-yellow text-white font-bold py-3 px-8 rounded-xl text-base hover:from-orange-600 hover:to-yellow-500 transform hover:scale-105 transition-all duration-200 shadow-lg"
+            >
+              Conheça a Aldeia Singular
+            </a>
+          </div>
+        </div>
+      </footer>
       </main>
   );
 }
