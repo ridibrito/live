@@ -125,9 +125,9 @@ export async function POST(request: NextRequest) {
     });
 
     // Enviar dados para o webhook do N8N
-    // TEMPORÁRIO: Usando URL de teste para verificar campos
+    // Enviar dados para o webhook do N8N (Produção)
     const webhookUrls = [
-      'https://webhook.coruss.com.br/webhook/live_aldeia_v2' // URL de teste (temporária)
+      'https://webhook.coruss.com.br/webhook/live_aldeia_v2'
     ];
 
     console.log('🚀 INICIANDO ENVIO PARA WEBHOOK N8N');
