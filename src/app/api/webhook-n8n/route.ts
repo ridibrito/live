@@ -15,7 +15,7 @@ export async function OPTIONS() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    
+
     // Log detalhado dos dados recebidos
     console.log('📥 Dados recebidos do formulário:', {
       name: body.name,
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
       emailValue: body.email,
       timestamp: new Date().toISOString()
     });
-    
+
     // Validar se os dados necessários estão presentes
     if (!body.name || !body.email || !body.phone || !body.occupation) {
       console.error('❌ Validação falhou - dados obrigatórios ausentes:', {
@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
     const normalizedEmail = body.email.trim().toLowerCase();
     // Remover formatação do telefone (apenas números)
     const normalizedPhone = body.phone.replace(/\D/g, '');
-    
+
     // Preparar os dados para envio ao webhook do N8N
     // O N8N vai fazer o mapeamento para o Bitrix24
     // Enviar email em múltiplos formatos para facilitar o mapeamento no N8N
@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
       occupation: webhookData.occupation,
       timestamp: webhookData.timestamp
     });
-    
+
     // Log completo do payload JSON para facilitar verificação no N8N
     console.log('📋 PAYLOAD COMPLETO ENVIADO AO N8N:', JSON.stringify(webhookData, null, 2));
     console.log('📧 TODOS OS FORMATOS DE EMAIL DISPONÍVEIS:', {
@@ -129,11 +129,11 @@ export async function POST(request: NextRequest) {
     const webhookUrls = [
       'https://webhook.coruss.com.br/webhook/live_aldeia_v2' // URL de teste (temporária)
     ];
-    
+
     console.log('🚀 INICIANDO ENVIO PARA WEBHOOK N8N');
     console.log('📋 URLs para tentar:', webhookUrls);
     console.log('📊 Total de URLs:', webhookUrls.length);
-    
+
     let webhookSuccess = false;
     let lastError = null;
 
@@ -153,11 +153,11 @@ export async function POST(request: NextRequest) {
         console.log('📤 Enviando requisição HTTP para webhook N8N...');
         console.log('🔗 URL:', webhookUrl);
         console.log('📦 Payload completo:', JSON.stringify(webhookData, null, 2));
-        
+
         // Criar um AbortController para timeout de 30 segundos
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 30000);
-        
+
         try {
           const webhookResponse = await fetch(webhookUrl, {
             method: 'POST',
@@ -168,11 +168,11 @@ export async function POST(request: NextRequest) {
             body: JSON.stringify(webhookData),
             signal: controller.signal,
           });
-          
+
           clearTimeout(timeoutId);
 
           const responseText = await webhookResponse.text();
-          
+
           console.log('📊 Resposta do webhook N8N:', {
             status: webhookResponse.status,
             statusText: webhookResponse.statusText,
@@ -185,7 +185,7 @@ export async function POST(request: NextRequest) {
             headers: Object.fromEntries(webhookResponse.headers.entries()),
             timestamp: new Date().toISOString()
           });
-          
+
           if (webhookResponse.ok) {
             console.log('✅ Dados enviados com sucesso para o webhook N8N:', {
               status: webhookResponse.status,
@@ -210,9 +210,9 @@ export async function POST(request: NextRequest) {
             });
             lastError = { status: webhookResponse.status, response: responseText, url: webhookUrl };
           }
-        } catch (fetchError) {
+        } catch (fetchError: unknown) {
           clearTimeout(timeoutId);
-          if (fetchError.name === 'AbortError') {
+          if (fetchError instanceof Error && fetchError.name === 'AbortError') {
             console.error('⏱️ TIMEOUT: Requisição ao webhook N8N demorou mais de 30 segundos');
             lastError = { error: 'Timeout após 30 segundos', url: webhookUrl };
           } else {
@@ -222,7 +222,7 @@ export async function POST(request: NextRequest) {
       } catch (webhookError) {
         const errorMessage = webhookError instanceof Error ? webhookError.message : String(webhookError);
         const errorStack = webhookError instanceof Error ? webhookError.stack : undefined;
-        
+
         console.error('❌ Erro de conexão com webhook N8N:', {
           error: errorMessage,
           stack: errorStack,
@@ -243,22 +243,22 @@ export async function POST(request: NextRequest) {
         emailConfirmado: webhookData.email,
         EMAILConfirmado: webhookData.EMAIL
       });
-      
+
       // Salvar dados em arquivo local como backup (opcional)
       console.log('💾 DADOS PARA BACKUP MANUAL:', JSON.stringify(webhookData, null, 2));
       console.log('📧 EMAIL NO BACKUP:', webhookData.email);
-      
+
       // Retornar sucesso mesmo com erro no webhook para não interromper o fluxo
       // O erro será investigado pelos logs do servidor
       return NextResponse.json(
-        { 
-          success: true, 
+        {
+          success: true,
           message: 'Inscrição realizada com sucesso (webhook N8N não respondeu - verificar logs)',
           webhookSuccess: false,
           webhookError: lastError,
           data: webhookData
         },
-        { 
+        {
           status: 200,
           headers: {
             'Access-Control-Allow-Origin': '*',
@@ -271,15 +271,15 @@ export async function POST(request: NextRequest) {
 
     console.log('✅✅✅ WEBHOOK N8N CHAMADO COM SUCESSO! ✅✅✅');
     console.log('📋 Dados enviados:', JSON.stringify(webhookData, null, 2));
-    
+
     return NextResponse.json(
-      { 
-        success: true, 
+      {
+        success: true,
         message: 'Inscrição realizada com sucesso',
         webhookSuccess: webhookSuccess,
         data: webhookData
       },
-      { 
+      {
         status: 200,
         headers: {
           'Access-Control-Allow-Origin': '*',
@@ -291,10 +291,10 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Erro na API route:', error);
-    
+
     return NextResponse.json(
       { error: 'Erro interno do servidor' },
-      { 
+      {
         status: 500,
         headers: {
           'Access-Control-Allow-Origin': '*',
