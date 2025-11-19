@@ -83,7 +83,7 @@ export default function ObrigadoPage() {
         {/* Botão CTA Principal */}
         <div className="space-y-6">
           <a
-            href="https://chat.whatsapp.com/DSGaieMiZHFEoD5d8lBGXy"
+            href="https://chat.whatsapp.com/KJZ2q2IYAPdCPThZtORyPo"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block bg-gradient-to-r from-accent-orange to-accent-yellow text-white font-bold py-4 px-8 rounded-xl text-lg hover:from-orange-600 hover:to-yellow-500 transform hover:scale-105 transition-all duration-200 shadow-2xl border-2 border-white"
