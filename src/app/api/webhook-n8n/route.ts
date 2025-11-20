@@ -12,32 +12,90 @@ export async function OPTIONS() {
   });
 }
 
+/**
+ * Helper para chamadas REST ao Bitrix24
+ * Segue o padrão do form.md para integração direta
+ */
+const callBitrix = async <T,>(
+  endpoint: string,
+  payload: Record<string, unknown>
+): Promise<T> => {
+  const bitrixWebhookUrl = process.env.BITRIX24_WEBHOOK_URL;
+  
+  if (!bitrixWebhookUrl) {
+    throw new Error('BITRIX24_WEBHOOK_URL não configurada nas variáveis de ambiente');
+  }
+
+  // A URL base já contém /rest/USER_ID/TOKEN, então apenas adicionamos o endpoint
+  const url = `${bitrixWebhookUrl}/${endpoint}`;
+  
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'Live-Aldeia-Singular/1.0',
+      },
+      body: JSON.stringify(payload),
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    const data = await response.json();
+    
+    if (!response.ok || data.error) {
+      throw new Error(data.error_description || data.error || `Erro ao executar ${endpoint}`);
+    }
+    
+    return data.result as T;
+  } catch (error) {
+    clearTimeout(timeoutId);
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error(`Timeout ao executar ${endpoint} após 30 segundos`);
+    }
+    throw error;
+  }
+};
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-
+    
     // Log detalhado dos dados recebidos
     console.log('📥 Dados recebidos do formulário:', {
       name: body.name,
       email: body.email,
       phone: body.phone,
       occupation: body.occupation,
-      hasEmail: !!body.email,
-      emailType: typeof body.email,
-      emailValue: body.email,
+      occupationType: typeof body.occupation,
+      occupationLength: body.occupation?.length,
+      bodyKeys: Object.keys(body),
       timestamp: new Date().toISOString()
     });
 
-    // Validar se os dados necessários estão presentes
-    if (!body.name || !body.email || !body.phone || !body.occupation) {
+    // Validação de campos obrigatórios
+    const occupationValue = body.occupation?.trim() || '';
+    if (!body.name || !body.email || !body.phone || !occupationValue) {
       console.error('❌ Validação falhou - dados obrigatórios ausentes:', {
         hasName: !!body.name,
         hasEmail: !!body.email,
         hasPhone: !!body.phone,
-        hasOccupation: !!body.occupation
+        hasOccupation: !!occupationValue,
+        occupationRaw: body.occupation,
+        occupationTrimmed: occupationValue,
+        bodyComplete: JSON.stringify(body)
       });
       return NextResponse.json(
-        { error: 'Dados obrigatórios não fornecidos' },
+        { error: 'Dados obrigatórios não fornecidos', missingFields: {
+          name: !body.name,
+          email: !body.email,
+          phone: !body.phone,
+          occupation: !occupationValue
+        }},
         { status: 400 }
       );
     }
@@ -52,234 +110,156 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Normalizar email e telefone
+    // Normalizar dados
     const normalizedEmail = body.email.trim().toLowerCase();
-    // Remover formatação do telefone (apenas números)
     const normalizedPhone = body.phone.replace(/\D/g, '');
+    const normalizedOccupation = occupationValue.trim(); // Garantir que está normalizado
 
-    // Preparar os dados para envio ao webhook do N8N
-    // O N8N vai fazer o mapeamento para o Bitrix24
-    // Enviar email em múltiplos formatos para facilitar o mapeamento no N8N
-    const webhookData = {
-      name: body.name,
-      email: normalizedEmail, // Campo padrão
+    // Separar nome em primeiro nome e sobrenome (se houver espaço)
+    const nameParts = body.name.trim().split(/\s+/);
+    const firstName = nameParts[0] || body.name;
+    const lastName = nameParts.slice(1).join(' ') || '';
+
+    console.log('🚀 Iniciando criação de Contact e Deal no Bitrix24');
+    console.log('📋 Dados normalizados:', {
+      firstName,
+      lastName,
+      email: normalizedEmail,
       phone: normalizedPhone,
-      occupation: body.occupation,
-      source: 'live-aldeia-singular',
-      tags: ['live-aldeia', 'formulario-inscricao', 'inscrito-para-live'],
-      timestamp: new Date().toISOString(),
-      userAgent: request.headers.get('user-agent') || '',
-      ip: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown',
-      // Incluir UTMs se enviados
-      utms: body.utms || {},
-      utm_source: body.utms?.utm_source || '',
-      utm_medium: body.utms?.utm_medium || '',
-      utm_campaign: body.utms?.utm_campaign || '',
-      utm_term: body.utms?.utm_term || '',
-      utm_content: body.utms?.utm_content || '',
-      // Formatos de email para facilitar mapeamento no N8N para Bitrix24
-      // Formato simples
-      EMAIL: normalizedEmail,
-      // Formato array Bitrix24 (para mapeamento direto)
-      EMAIL_array: [
-        {
-          VALUE: normalizedEmail,
-          VALUE_TYPE: 'WORK'
-        }
-      ],
-      // Formatos alternativos
-      clientEmail: normalizedEmail,
-      customerEmail: normalizedEmail,
-      leadEmail: normalizedEmail,
-      contactEmail: normalizedEmail,
-      // Formato com índice
-      'email[0][VALUE]': normalizedEmail,
-      'EMAIL[0][VALUE]': normalizedEmail,
-      'EMAIL[0][VALUE_TYPE]': 'WORK',
-    };
-
-    // Log detalhado dos dados que serão enviados
-    console.log('📤 Dados preparados para envio ao N8N:', {
-      name: webhookData.name,
-      email: webhookData.email,
-      EMAIL: webhookData.EMAIL,
-      EMAIL_array: webhookData.EMAIL_array,
-      phone: webhookData.phone,
-      occupation: webhookData.occupation,
-      timestamp: webhookData.timestamp
+      occupation: normalizedOccupation,
+      occupationLength: normalizedOccupation.length
     });
 
-    // Log completo do payload JSON para facilitar verificação no N8N
-    console.log('📋 PAYLOAD COMPLETO ENVIADO AO N8N:', JSON.stringify(webhookData, null, 2));
-    console.log('📧 TODOS OS FORMATOS DE EMAIL DISPONÍVEIS:', {
-      'email': webhookData.email,
-      'EMAIL': webhookData.EMAIL,
-      'EMAIL_array': webhookData.EMAIL_array,
-      'clientEmail': webhookData.clientEmail,
-      'customerEmail': webhookData.customerEmail,
-      'leadEmail': webhookData.leadEmail,
-      'contactEmail': webhookData.contactEmail,
-      'email[0][VALUE]': webhookData['email[0][VALUE]'],
-      'EMAIL[0][VALUE]': webhookData['EMAIL[0][VALUE]'],
-      'EMAIL[0][VALUE_TYPE]': webhookData['EMAIL[0][VALUE_TYPE]']
+    let contactId: number | null = null;
+    let dealId: number | null = null;
+    let error: string | null = null;
+    let pipelineInfo: { categoryId?: number; stageId?: string } = {};
+
+    // Pipeline 42 para Deals (conforme URL fornecida)
+    const dealCategoryId = process.env.BITRIX24_DEAL_CATEGORY_ID 
+      ? parseInt(process.env.BITRIX24_DEAL_CATEGORY_ID, 10) 
+      : 42; // Pipeline padrão: 42
+
+    // Stage inicial do Deal (opcional via variável de ambiente)
+    const dealStageId = process.env.BITRIX24_DEAL_STAGE_ID || 'NEW';
+
+    console.log('📋 Configuração do Pipeline:', {
+      dealCategoryId: dealCategoryId,
+      dealStageId: dealStageId,
+      note: `Deal será criado no pipeline ${dealCategoryId}`
     });
 
-    // Enviar dados para o webhook do N8N
-    // Enviar dados para o webhook do N8N (Produção)
-    const webhookUrls = [
-      'https://webhook.coruss.com.br/webhook/live_aldeia_v2'
-    ];
-
-    console.log('🚀 INICIANDO ENVIO PARA WEBHOOK N8N');
-    console.log('📋 URLs para tentar:', webhookUrls);
-    console.log('📊 Total de URLs:', webhookUrls.length);
-
-    let webhookSuccess = false;
-    let lastError = null;
-
-    // Tentar cada URL de webhook até encontrar uma que funcione
-    console.log('🔄 Iniciando loop de tentativas de webhook...');
-    for (const webhookUrl of webhookUrls) {
-      console.log(`🔄 Tentativa ${webhookUrls.indexOf(webhookUrl) + 1}/${webhookUrls.length} - URL: ${webhookUrl}`);
-      try {
-        console.log('🔄 Tentando enviar dados para webhook N8N:', {
-          url: webhookUrl,
-          email: webhookData.email,
-          EMAIL: webhookData.EMAIL,
-          EMAIL_array: webhookData.EMAIL_array,
-          timestamp: new Date().toISOString()
-        });
-
-        console.log('📤 Enviando requisição HTTP para webhook N8N...');
-        console.log('🔗 URL:', webhookUrl);
-        console.log('📦 Payload completo:', JSON.stringify(webhookData, null, 2));
-
-        // Criar um AbortController para timeout de 30 segundos
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 30000);
-
-        try {
-          const webhookResponse = await fetch(webhookUrl, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'User-Agent': 'Live-Aldeia-Singular/1.0',
-            },
-            body: JSON.stringify(webhookData),
-            signal: controller.signal,
-          });
-
-          clearTimeout(timeoutId);
-
-          const responseText = await webhookResponse.text();
-
-          console.log('📊 Resposta do webhook N8N:', {
-            status: webhookResponse.status,
-            statusText: webhookResponse.statusText,
-            ok: webhookResponse.ok,
-            response: responseText,
-            url: webhookUrl,
-            emailEnviado: webhookData.email,
-            EMAILEnviado: webhookData.EMAIL,
-            EMAIL_arrayEnviado: JSON.stringify(webhookData.EMAIL_array),
-            headers: Object.fromEntries(webhookResponse.headers.entries()),
-            timestamp: new Date().toISOString()
-          });
-
-          if (webhookResponse.ok) {
-            console.log('✅ Dados enviados com sucesso para o webhook N8N:', {
-              status: webhookResponse.status,
-              response: responseText,
-              url: webhookUrl,
-              email: webhookData.email,
-              EMAIL: webhookData.EMAIL,
-              EMAIL_array: webhookData.EMAIL_array,
-              dataCompleto: webhookData,
-              timestamp: new Date().toISOString()
-            });
-            webhookSuccess = true;
-            break; // Sair do loop se conseguir enviar
-          } else {
-            console.error('❌ Erro ao enviar para webhook N8N:', {
-              status: webhookResponse.status,
-              statusText: webhookResponse.statusText,
-              response: responseText,
-              url: webhookUrl,
-              emailTentado: webhookData.email,
-              timestamp: new Date().toISOString()
-            });
-            lastError = { status: webhookResponse.status, response: responseText, url: webhookUrl };
-          }
-        } catch (fetchError: unknown) {
-          clearTimeout(timeoutId);
-          if (fetchError instanceof Error && fetchError.name === 'AbortError') {
-            console.error('⏱️ TIMEOUT: Requisição ao webhook N8N demorou mais de 30 segundos');
-            lastError = { error: 'Timeout após 30 segundos', url: webhookUrl };
-          } else {
-            throw fetchError; // Re-throw para ser capturado pelo catch externo
-          }
-        }
-      } catch (webhookError) {
-        const errorMessage = webhookError instanceof Error ? webhookError.message : String(webhookError);
-        const errorStack = webhookError instanceof Error ? webhookError.stack : undefined;
-
-        console.error('❌ Erro de conexão com webhook N8N:', {
-          error: errorMessage,
-          stack: errorStack,
-          url: webhookUrl,
-          timestamp: new Date().toISOString()
-        });
-        lastError = { error: errorMessage, url: webhookUrl };
-      }
-    }
-
-    // Se nenhum webhook funcionou, logar o erro final mas ainda retornar sucesso
-    // para não interromper o fluxo do usuário
-    if (!webhookSuccess) {
-      console.error('❌ Nenhum webhook N8N funcionou. Último erro:', lastError);
-      console.error('❌ DETALHES DO ERRO:', JSON.stringify(lastError, null, 2));
-      console.log('📝 Dados processados localmente (nenhum webhook disponível):', {
-        ...webhookData,
-        emailConfirmado: webhookData.email,
-        EMAILConfirmado: webhookData.EMAIL
+    try {
+      // 1. Criar Contact (Contato) seguindo o padrão do form.md
+      console.log('👤 Criando contato...');
+      contactId = await callBitrix<number>('crm.contact.add.json', {
+        fields: {
+          NAME: firstName,
+          LAST_NAME: lastName,
+          EMAIL: [{ VALUE: normalizedEmail, VALUE_TYPE: 'WORK' }],
+          PHONE: [{ VALUE: normalizedPhone, VALUE_TYPE: 'WORK' }],
+          POST: normalizedOccupation, // Usar ocupação normalizada
+          COMMENTS: `Ocupação: ${normalizedOccupation}\nOrigem: Live Aldeia Singular\nFonte: Formulário de Inscrição`,
+          SOURCE_ID: 'WEB',
+          SOURCE_DESCRIPTION: 'Formulário de Inscrição - Live Aldeia Singular',
+          UTM_SOURCE: body.utms?.utm_source || '',
+          UTM_MEDIUM: body.utms?.utm_medium || '',
+          UTM_CAMPAIGN: body.utms?.utm_campaign || '',
+          UTM_TERM: body.utms?.utm_term || '',
+          UTM_CONTENT: body.utms?.utm_content || '',
+          OPENED: 'Y'
+        },
+        params: { REGISTER_SONET_EVENT: 'Y' }
       });
 
-      // Salvar dados em arquivo local como backup (opcional)
-      console.log('💾 DADOS PARA BACKUP MANUAL:', JSON.stringify(webhookData, null, 2));
-      console.log('📧 EMAIL NO BACKUP:', webhookData.email);
+      console.log('✅ Contato criado com sucesso! ID:', contactId);
 
-      // Retornar sucesso mesmo com erro no webhook para não interromper o fluxo
-      // O erro será investigado pelos logs do servidor
-      return NextResponse.json(
-        {
-          success: true,
-          message: 'Inscrição realizada com sucesso (webhook N8N não respondeu - verificar logs)',
-          webhookSuccess: false,
-          webhookError: lastError,
-          data: webhookData
+      // 2. Criar Deal (Negócio) no pipeline 42 seguindo o padrão do form.md
+      console.log('💼 Criando deal no pipeline', dealCategoryId, '...');
+      dealId = await callBitrix<number>('crm.deal.add.json', {
+        fields: {
+          TITLE: body.name, // Nome do negócio igual ao nome do contato
+          STAGE_ID: dealStageId,
+          CATEGORY_ID: dealCategoryId,
+          CURRENCY_ID: 'BRL',
+          ADDITIONAL_INFO: `Ocupação: ${normalizedOccupation}`, // Campo específico para ocupação normalizada
+          COMMENTS: `Ocupação: ${normalizedOccupation}\nOrigem: Live Aldeia Singular\nFonte: Formulário de Inscrição`,
+          SOURCE_ID: 'WEB',
+          SOURCE_DESCRIPTION: 'Formulário de Inscrição - Live Aldeia Singular',
+          CONTACT_IDS: [contactId], // Usar CONTACT_IDS (array) - CONTACT_ID está deprecated
+          ASSIGNED_BY_ID: process.env.BITRIX24_ASSIGNED_BY_ID 
+            ? parseInt(process.env.BITRIX24_ASSIGNED_BY_ID, 10) 
+            : undefined, // Opcional: ID do responsável
+          OPENED: 'Y',
+          UTM_SOURCE: body.utms?.utm_source || '',
+          UTM_MEDIUM: body.utms?.utm_medium || '',
+          UTM_CAMPAIGN: body.utms?.utm_campaign || '',
+          UTM_TERM: body.utms?.utm_term || '',
+          UTM_CONTENT: body.utms?.utm_content || ''
         },
-        {
-          status: 200,
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'POST, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type',
-          }
+        params: { REGISTER_SONET_EVENT: 'Y' }
+      });
+
+      console.log('✅ Deal criado com sucesso no pipeline', dealCategoryId, '! ID:', dealId);
+
+      // Buscar informações do deal criado para verificar pipeline e stage
+      try {
+        const dealInfo = await callBitrix<{
+          CATEGORY_ID?: string;
+          STAGE_ID?: string;
+          TITLE?: string;
+        }>('crm.deal.get.json', {
+          id: dealId
+        });
+
+        pipelineInfo = {
+          categoryId: dealInfo.CATEGORY_ID ? parseInt(dealInfo.CATEGORY_ID, 10) : undefined,
+          stageId: dealInfo.STAGE_ID
+        };
+
+        console.log('📊 Informações do Deal criado:', {
+          dealId: dealId,
+          categoryId: pipelineInfo.categoryId || 'N/A',
+          stageId: pipelineInfo.stageId || 'N/A',
+          title: dealInfo.TITLE
+        });
+      } catch (infoError) {
+        console.warn('⚠️ Não foi possível buscar informações do deal:', infoError);
+      }
+
+    } catch (bitrixError: unknown) {
+      const errorMessage = bitrixError instanceof Error ? bitrixError.message : String(bitrixError);
+      console.error('❌ Erro ao criar lead no Bitrix24:', errorMessage);
+      error = errorMessage;
+      
+      // Log detalhado para debug
+      console.error('❌ Detalhes do erro:', {
+        error: errorMessage,
+        timestamp: new Date().toISOString(),
+        data: {
+          name: body.name,
+          email: normalizedEmail,
+          phone: normalizedPhone
         }
-      );
+      });
     }
 
-    console.log('✅✅✅ WEBHOOK N8N CHAMADO COM SUCESSO! ✅✅✅');
-    console.log('📋 Dados enviados:', JSON.stringify(webhookData, null, 2));
-
+    // Retornar sucesso mesmo se houver erro no Bitrix24 (para não bloquear o usuário)
+    // O erro será logado para análise posterior
     return NextResponse.json(
-      {
-        success: true,
-        message: 'Inscrição realizada com sucesso',
-        webhookSuccess: webhookSuccess,
-        data: webhookData
+      { 
+        success: true, 
+        message: 'Inscrição processada',
+        bitrixSuccess: dealId !== null && contactId !== null,
+        contactId: contactId,
+        dealId: dealId,
+        pipeline: pipelineInfo.categoryId 
+          ? `Pipeline ID: ${pipelineInfo.categoryId}` 
+          : `Pipeline ${dealCategoryId}`,
+        stage: pipelineInfo.stageId || dealStageId,
+        error: error || undefined
       },
-      {
+      { 
         status: 200,
         headers: {
           'Access-Control-Allow-Origin': '*',
@@ -290,11 +270,11 @@ export async function POST(request: NextRequest) {
     );
 
   } catch (error) {
-    console.error('Erro na API route:', error);
-
+    console.error('❌ Erro na API route:', error);
+    
     return NextResponse.json(
       { error: 'Erro interno do servidor' },
-      {
+      { 
         status: 500,
         headers: {
           'Access-Control-Allow-Origin': '*',

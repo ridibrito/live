@@ -9,7 +9,6 @@ import {
   ClockIcon,
   ComputerDesktopIcon,
   HeartIcon,
-  UserGroupIcon,
   CheckCircleIcon,
   LinkIcon,
   BookOpenIcon
@@ -251,14 +250,21 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Lado direito - Placeholder para foto */}
+                {/* Lado direito - Foto do Dr. Thiago */}
                 <div className="relative bg-gradient-to-br from-primary-purple to-primary-dark p-8 lg:p-12 flex items-center justify-center order-1 lg:order-2">
-                  <div className="relative w-full h-full min-h-[300px] flex items-center justify-center">
-                    <div className="text-white text-center">
-                      <UserGroupIcon className="w-24 h-24 mx-auto mb-4 opacity-50" />
-                      <p className="text-sm opacity-75">Foto do Dr. Tiago Figueiredo</p>
-                    </div>
+                  <div className="relative">
+                    <div className="absolute -inset-4 bg-gradient-to-r from-accent-orange to-accent-yellow rounded-2xl blur-sm opacity-30"></div>
+                    <Image
+                      src="/thiago.webp"
+                      alt="Dr. Tiago Figueiredo"
+                      width={400}
+                      height={550}
+                      className="relative rounded-2xl shadow-2xl object-cover border-4 border-white"
+                    />
                   </div>
+                  {/* Decoração de fundo */}
+                  <div className="absolute top-4 right-4 w-20 h-20 bg-accent-orange/20 rounded-full"></div>
+                  <div className="absolute bottom-4 left-4 w-16 h-16 bg-accent-yellow/20 rounded-full"></div>
                 </div>
               </div>
             </div>
@@ -276,10 +282,10 @@ export default function Home() {
                   <div className="relative">
                     <div className="absolute -inset-4 bg-gradient-to-r from-accent-orange to-accent-yellow rounded-2xl blur-sm opacity-30"></div>
                     <Image
-                      src="/angela_site.webp"
+                      src="/angela.png"
                       alt="Angela Virgolim"
                       width={400}
-                      height={400}
+                      height={550}
                       className="relative rounded-2xl shadow-2xl object-cover border-4 border-white"
                     />
                   </div>

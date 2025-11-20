@@ -104,7 +104,16 @@ export default function RegistrationForm() {
         utms: utmParams,
       };
       
-      console.log('🔄 Enviando dados para API:', apiUrl, dataWithUtms);
+      console.log('🔄 Enviando dados para API:', apiUrl);
+      console.log('📋 Dados do formulário:', {
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        occupation: data.occupation,
+        occupationType: typeof data.occupation,
+        occupationLength: data.occupation?.length,
+        dataComplete: dataWithUtms
+      });
       
       const response = await fetch(apiUrl, {
         method: 'POST',
