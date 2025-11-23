@@ -1,6 +1,6 @@
 'use client';
 
-import RegistrationFormWrapper from '@/components/RegistrationFormWrapper';
+import BitrixForm from '@/components/BitrixForm';
 import Section from '@/components/Section';
 import Image from 'next/image';
 import { useEffect } from 'react';
@@ -94,7 +94,10 @@ export default function Home() {
                   <span className="block text-3xl md:text-4xl lg:text-5xl font-bold text-white">AHSD em Crianças com TEA e TDAH</span>
                 </h1>
                 <p className="text-lg lg:text-xl text-white/90 leading-relaxed">
-                  <span className="font-bold">Meu filho tem TDAH, TEA ou Altas Habilidades?</span> Uma conversa acolhedora e esclarecedora para pais que se sentem perdidos no labirinto do diagnóstico e buscam a melhor forma de apoiar suas crianças singulares.
+                  Se o seu filho tem sinais ou diagnóstico de TDAH, TEA ou Altas Habilidades e Superdotação, você não está sozinha.
+                </p>
+                <p className="text-lg lg:text-xl text-white/90 leading-relaxed">
+                  Nesta live, a Dra. Angela Virgolim e o psiquiatra Dr. Tiago Figueiredo vão te ajudar a entender melhor o diagnóstico e o potencial da sua criança, em uma conversa leve, acolhedora e transformadora.
                 </p>
               </div>
 
@@ -132,7 +135,7 @@ export default function Home() {
 
             {/* Formulário de Inscrição */}
             <div className="flex justify-center lg:justify-end">
-              <RegistrationFormWrapper />
+              <BitrixForm />
             </div>
           </div>
         </div>

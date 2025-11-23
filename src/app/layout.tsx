@@ -21,6 +21,10 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
+        {/* Preconnect para otimizar carregamento do Bitrix24 */}
+        <link rel="preconnect" href="https://cdn.bitrix24.com.br" />
+        <link rel="dns-prefetch" href="https://cdn.bitrix24.com.br" />
+        
         {/* Google Tag Manager */}
         <script
           dangerouslySetInnerHTML={{

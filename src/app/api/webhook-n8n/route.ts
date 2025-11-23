@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+export const runtime = 'nodejs';
+export const preferredRegion = ['gru1'];
 
 // Suporte a CORS para produção
 export async function OPTIONS() {
@@ -26,8 +28,9 @@ const callBitrix = async <T,>(
     throw new Error('BITRIX24_WEBHOOK_URL não configurada nas variáveis de ambiente');
   }
 
-  // A URL base já contém /rest/USER_ID/TOKEN, então apenas adicionamos o endpoint
-  const url = `${bitrixWebhookUrl}/${endpoint}`;
+  const baseUrl = bitrixWebhookUrl.replace(/\/+$/, '');
+  const cleanEndpoint = endpoint.replace(/^\/+/, '');
+  const url = `${baseUrl}/${cleanEndpoint}`;
   
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 30000);
@@ -38,6 +41,7 @@ const callBitrix = async <T,>(
       headers: {
         'Content-Type': 'application/json',
         'User-Agent': 'Live-Aldeia-Singular/1.0',
+        'Accept': 'application/json',
       },
       body: JSON.stringify(payload),
       signal: controller.signal,
@@ -45,13 +49,23 @@ const callBitrix = async <T,>(
 
     clearTimeout(timeoutId);
 
-    const data = await response.json();
-    
-    if (!response.ok || data.error) {
-      throw new Error(data.error_description || data.error || `Erro ao executar ${endpoint}`);
+    const contentType = response.headers.get('content-type') || '';
+    const isJson = contentType.includes('application/json');
+    const parsed = isJson ? await response.json() : await response.text();
+
+    if (!response.ok) {
+      throw new Error(
+        isJson
+          ? (parsed.error_description || parsed.error || `HTTP ${response.status}`)
+          : String(parsed || `HTTP ${response.status}`)
+      );
     }
-    
-    return data.result as T;
+
+    if (isJson && (parsed.error || parsed.error_description)) {
+      throw new Error(parsed.error_description || parsed.error);
+    }
+
+    return isJson ? (parsed.result as T) : (parsed as unknown as T);
   } catch (error) {
     clearTimeout(timeoutId);
     if (error instanceof Error && error.name === 'AbortError') {
@@ -242,6 +256,36 @@ export async function POST(request: NextRequest) {
           phone: normalizedPhone
         }
       });
+
+      // Fallback opcional para N8N/Make, se configurado em produção
+      const makeWebhookUrl = process.env.MAKE_WEBHOOK_URL;
+      if (makeWebhookUrl) {
+        try {
+          console.log('🔄 Fallback: enviando dados para MAKE_WEBHOOK_URL');
+          const controller2 = new AbortController();
+          const timeout2 = setTimeout(() => controller2.abort(), 20000);
+          const fallbackPayload = {
+            name: body.name,
+            email: normalizedEmail,
+            phone: normalizedPhone,
+            occupation: normalizedOccupation,
+            utms: body.utms || {},
+            source: 'fallback_bitrix_error',
+            error: errorMessage,
+          };
+          const resp = await fetch(makeWebhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(fallbackPayload),
+            signal: controller2.signal,
+          });
+          const text = await resp.text();
+          clearTimeout(timeout2);
+          console.log('📨 Fallback resposta:', { status: resp.status, ok: resp.ok, len: text.length });
+        } catch (fbErr) {
+          console.warn('⚠️ Fallback falhou:', fbErr);
+        }
+      }
     }
 
     // Retornar sucesso mesmo se houver erro no Bitrix24 (para não bloquear o usuário)
