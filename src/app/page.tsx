@@ -87,7 +87,7 @@ export default function Home() {
 
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Conteúdo do Hero */}
-            <div className="text-white space-y-8">
+            <div className="text-white space-y-8 order-2 lg:order-1">
               <div className="space-y-6">
                 <h1 className="leading-tight mb-6">
                   <span className="block text-xl md:text-2xl font-medium text-white/90 mb-2">Entre Singularidades:</span>
@@ -134,7 +134,7 @@ export default function Home() {
             </div>
 
             {/* Formulário de Inscrição */}
-            <div className="flex justify-center lg:justify-end">
+            <div className="flex justify-center lg:justify-end order-1 lg:order-2">
               <BitrixForm />
             </div>
           </div>
