@@ -86,9 +86,9 @@ export default function ObrigadoPage() {
             href="https://chat.whatsapp.com/KJZ2q2IYAPdCPThZtORyPo"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-gradient-to-r from-accent-orange to-accent-yellow text-white font-bold py-4 px-8 rounded-xl text-lg hover:from-orange-600 hover:to-yellow-500 transform hover:scale-105 transition-all duration-200 shadow-2xl border-2 border-white"
+            className="inline-block bg-green-500 text-white font-bold py-4 px-8 rounded-xl text-lg hover:bg-green-600 transform hover:scale-105 transition-all duration-200 shadow-2xl border-2 border-white"
           >
-            NÃO QUERO PERDER NADA
+            Entrar no grupo do WhatsApp
           </a>
           <p className="text-white/80 text-sm">⚡ Acesso imediato ao grupo exclusivo</p>
         </div>
